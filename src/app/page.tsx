@@ -25,7 +25,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
-import Spinner from "@/components/spinner";
+import Spinner from "@/components/Spinner";
 import CloseIcon from "@/assets/icons/closeIcon";
 
 export type LoginFormValues = {
@@ -57,8 +57,6 @@ const Home = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data.token, isSuccess]);
-
-  console.log("111", isPending);
 
   useEffect(() => {
     if (registerData?.data.accessToken && registerSuccess) {
@@ -136,14 +134,14 @@ const Home = () => {
         </div>
         <div className="w-full max-w-[58.375rem] h-13.09963rem flex-shrink-0 p-40 xs:px-2">
           <div className="flex flex-col w-full justify-center items-start gap-[2.5rem]">
-            <div className="text-white text-5xl font-semibold leading-[5rem] xs:w-full xs:text-3xl">
+            <p className="text-white text-5xl font-semibold leading-[5rem] xs:w-full xs:text-3xl">
               Best Position Ever Found
-            </div>
-            <div className="text-white text-2xl font-semibold leading-[1.875rem] xs:text-lg">
+            </p>
+            <p className="text-white text-2xl font-semibold leading-[1.875rem] xs:text-lg">
               In the field of Human Resources, we pave the way for the future
               with innovative solutions, discover talents, and transform
               potential into reality.
-            </div>
+            </p>
           </div>
         </div>
       </div>
@@ -171,9 +169,9 @@ const Home = () => {
         </div>
         <div className="w-[0.0625rem] h-[9.25rem] bg-gray-400 bg-opacity-20 xs:w-full xs:h-[0.0625rem]"></div>
         <div className="flex py-12 px-0 items-center gap-4 xs:py-0">
-          <div className="text-gray-700 text-base font-normal leading-125">
+          <p className="text-gray-700 text-base font-normal leading-125">
             © 2010 - 2024 ACME
-          </div>
+          </p>
         </div>
       </div>
 
@@ -183,7 +181,7 @@ const Home = () => {
         className="p-4 md:p-6 flex-col gap-6overflow-y-auto overflow-x-hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
       >
         <div className="relative p-4 w-full max-w-md max-h-full">
-          <div className="relative flex justify-center flex-col gap-[1rem] bg-white rounded-lg shadow ">
+          <div className="relative flex justify-center h-96 flex-col gap-[1rem] bg-white rounded-lg shadow ">
             {isPending ? (
               <Spinner />
             ) : (
@@ -194,7 +192,7 @@ const Home = () => {
                   </h3>
                   <button
                     type="button"
-                    className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center  "
+                    className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
                     data-modal-hide="authentication-modal"
                     onClick={() => setOpenLoginModal(false)}
                   >
@@ -308,7 +306,7 @@ const Home = () => {
                       type="submit"
                       className="flex px-[1.1875rem] py-[0.6875rem] justify-center items-center gap-[0.375rem] rounded-[0.3125rem] bg-gradient-to-r from-blue-600 to-blue-900 text-white text-center font-medium text-sm leading-[1.09375rem]"
                     >
-                      Login to your account
+                      Login
                     </button>
                     <div className="text-sm font-medium text-gray-500 ">
                       Don’t have an account?{" "}
@@ -337,7 +335,7 @@ const Home = () => {
         className="p-4 md:p-6 flex-col gap-6overflow-y-auto overflow-x-hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
       >
         <div className="relative p-4 w-full max-w-md max-h-full">
-          <div className="relative flex justify-center flex-col gap-[1rem] bg-white rounded-lg shadow ">
+          <div className="relative flex justify-center h-96 flex-col gap-[1rem] bg-white rounded-lg shadow ">
             {registerPending ? (
               <Spinner />
             ) : (
@@ -448,7 +446,7 @@ const Home = () => {
                       type="submit"
                       className="flex px-[1.1875rem] py-[0.6875rem] justify-center items-center gap-[0.375rem] rounded-[0.3125rem] bg-gradient-to-r from-blue-600 to-blue-900 text-white text-center font-medium text-sm leading-[1.09375rem]"
                     >
-                      Login to your account{""}
+                      Sign Up
                     </button>
                     <div className="text-sm font-medium text-gray-500 ">
                       Already have an account?

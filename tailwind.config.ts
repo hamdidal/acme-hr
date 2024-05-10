@@ -5,6 +5,10 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/layout/Header.tsx",
+    "./src/layout/Navbar.tsx",
+    "./src/layout/Table.tsx",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     screens: {
@@ -18,7 +22,7 @@ const config: Config = {
     },
     extend: {
       boxShadow: {
-        "custom-shadow": "rgba(0, 0, 0, 0.35) 0px 5px 15px)",
+        "custom-shadow": "rgba(0, 0, 0, 0.35) 0px 5px 15px",
       },
       backgroundImage: {
         "my-bg-gradient": "linear-gradient(to right, #ff0000, #3333ff)",
