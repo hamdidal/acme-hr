@@ -9,24 +9,19 @@ import TwIcon from "@/assets/icons/twIcon";
 import UserIcon from "@/assets/icons/userIcon";
 import RegisterIcon from "@/assets/icons/userIcon copy";
 import useAuthStore from "@/context/auth-store";
-import { login } from "@/services/be-api/auth/endpoints";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   useLoginMutation,
   useRegisterMutation,
 } from "@/utils/hooks/queries/auth";
-import {
-  QueryClientProvider,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import Spinner from "@/components/Spinner";
 import CloseIcon from "@/assets/icons/closeIcon";
+import { useTranslation } from "react-i18next";
+import { LanguagePickerDropdown } from "@/layout/LanguagePickerDropdown";
 
 export type LoginFormValues = {
   email: string;
@@ -34,6 +29,7 @@ export type LoginFormValues = {
 };
 
 const Home = () => {
+  const { t } = useTranslation();
   const { mutate, data, isSuccess, isPending } = useLoginMutation();
   const {
     mutate: registerMutate,
@@ -42,7 +38,7 @@ const Home = () => {
     isSuccess: registerSuccess,
   } = useRegisterMutation();
 
-  const { setAccessToken, accessToken } = useAuthStore();
+  const { setAccessToken } = useAuthStore();
   const router = useRouter();
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openRegisterModal, setOpenRegisterModal] = useState(false);
@@ -73,17 +69,16 @@ const Home = () => {
     .shape({
       email: yup
         .string()
-        .email("E-mail formatında olmalıdır!")
-        .required("E-mail alanı zorunludur!")
-        .max(256, "E-mail max 256 karakter olmalıdır!"),
+        .email(t("homePageEmailWarningType"))
+        .required(t("homePageEmailRequired"))
+        .max(256, t("homePageEmailMax")),
       password: yup
         .string()
-        .min(8, "Şifre en az 8 karakter olmalıdır!")
-        .max(16, "Şifre en fazla 12 karakter olmalıdır!")
-        .required("Şifre alanı zorunludur!")
+        .min(8, t("homePagePasswordMin"))
+        .max(16, t("homePagePasswordMax"))
+        .required(t("homePagePasswordRequired"))
         .matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$/, {
-          message:
-            "Şifre en az 1 büyük harf, 1 küçük harf ve 1 sayı içermelidir!",
+          message: t("homePagePasswordWarningType"),
         }),
     })
     .required();
@@ -116,31 +111,30 @@ const Home = () => {
             <AcmeIcon currentColor={"white"} />
           </div>
           <div className="flex px-0.625rem justify-between items-start gap-[1.25rem]">
+            <LanguagePickerDropdown />
             <button
               onClick={() => setOpenLoginModal(!openLoginModal)}
               className="flex px-[1.1875rem] py-[0.6875rem] justify-center items-center gap-[0.375rem] rounded-[0.3125rem] bg-gradient-to-r from-blue-600 to-blue-900 text-white text-center font-medium text-sm leading-[1.09375rem]"
             >
               <UserIcon />
-              Log in
+              {t("homePageLogin")}
             </button>
             <button
               onClick={() => setOpenRegisterModal(!openRegisterModal)}
               className="flex px-[1.1875rem] py-[0.6875rem] justify-center items-center gap-[0.375rem] rounded-[0.3125rem] bg-gradient-to-r from-blue-600 to-blue-900 text-white text-center font-medium text-sm leading-[1.09375rem]"
             >
               <RegisterIcon />
-              Sign Up
+              {t("homePageSignup")}
             </button>
           </div>
         </div>
         <div className="w-full max-w-[58.375rem] h-13.09963rem flex-shrink-0 p-40 xs:px-2">
           <div className="flex flex-col w-full justify-center items-start gap-[2.5rem]">
             <p className="text-white text-5xl font-semibold leading-[5rem] xs:w-full xs:text-3xl">
-              Best Position Ever Found
+              {t("homePageBestPositionEver")}
             </p>
             <p className="text-white text-2xl font-semibold leading-[1.875rem] xs:text-lg">
-              In the field of Human Resources, we pave the way for the future
-              with innovative solutions, discover talents, and transform
-              potential into reality.
+              {t("homePageHumanResources")}
             </p>
           </div>
         </div>
@@ -151,14 +145,12 @@ const Home = () => {
           <div className="flex items-end gap-6">
             <AcmeIcon currentColor={"#119DFF"} />
             <p className="text-gray-800 text-lg font-semibold leading-125">
-              Ready to get started?
+              {t("homePageReadyToStart")}
             </p>
           </div>
           <div className="w-38.87288 flex-1 text-base font-normal leading-125">
             <p className="text-gray-700 text-base font-normal leading-125 w-96 flex-1">
-              In the field of Human Resources, we pave the way for the future
-              with innovative solutions, discover talents, and transform
-              potential into reality.
+              {t("homePageHumanResources")}
             </p>
           </div>
           <div className="flex px-2 items-center gap-5">
@@ -170,7 +162,7 @@ const Home = () => {
         <div className="w-[0.0625rem] h-[9.25rem] bg-gray-400 bg-opacity-20 xs:w-full xs:h-[0.0625rem]"></div>
         <div className="flex py-12 px-0 items-center gap-4 xs:py-0">
           <p className="text-gray-700 text-base font-normal leading-125">
-            © 2010 - 2024 ACME
+            {t("homePageFooterDateRange")}
           </p>
         </div>
       </div>
@@ -181,14 +173,14 @@ const Home = () => {
         className="p-4 md:p-6 flex-col gap-6overflow-y-auto overflow-x-hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
       >
         <div className="relative p-4 w-full max-w-md max-h-full">
-          <div className="relative flex justify-center h-96 flex-col gap-[1rem] bg-white rounded-lg shadow ">
+          <div className="relative flex justify-center h-[30rem] flex-col gap-[1rem] bg-white rounded-lg shadow ">
             {isPending ? (
               <Spinner />
             ) : (
               <>
                 <div className="flex items-center p-4 md:p-5 ">
                   <h3 className="text-xl absolute left-48 font-semibold text-gray-900 flex justify-center">
-                    Login{" "}
+                    {t("homePageLogin")}
                   </h3>
                   <button
                     type="button"
@@ -211,7 +203,7 @@ const Home = () => {
                         d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                       />
                     </svg>
-                    <span className="sr-only">Close modal</span>
+                    <span className="sr-only"> {t("homePageCloseModal")}</span>
                   </button>
                 </div>
                 <div className="p-4 md:p-5">
@@ -225,7 +217,7 @@ const Home = () => {
                         htmlFor="email"
                         className="text-gray-700 font-barlow font-medium text-base leading-[1.5rem]"
                       >
-                        E-mail Address{" "}
+                        {t("homePageEmailAddress")}
                       </label>
                       <Controller
                         name="email"
@@ -237,9 +229,8 @@ const Home = () => {
                         render={({ field }: { field: any }) => (
                           <input
                             type="email"
-                            id="email"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="name@mail.com"
+                            placeholder={t("homePageEmailPlaceholder")}
                             {...field}
                           />
                         )}
@@ -255,7 +246,7 @@ const Home = () => {
                         htmlFor="password"
                         className="text-gray-700 font-barlow font-medium text-base leading-[1.5rem]"
                       >
-                        Password{" "}
+                        {t("homePagePassword")}
                       </label>
                       <div className="flex justify-center items-center">
                         <Controller
@@ -265,8 +256,7 @@ const Home = () => {
                             <>
                               <input
                                 type={passwordVisible ? "text" : "password"}
-                                id="password"
-                                placeholder="Password"
+                                placeholder={t("homePagePasswordPlaceholder")}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                 {...field}
                               />
@@ -306,10 +296,10 @@ const Home = () => {
                       type="submit"
                       className="flex px-[1.1875rem] py-[0.6875rem] justify-center items-center gap-[0.375rem] rounded-[0.3125rem] bg-gradient-to-r from-blue-600 to-blue-900 text-white text-center font-medium text-sm leading-[1.09375rem]"
                     >
-                      Login
+                      {t("homePageLogin")}
                     </button>
-                    <div className="text-sm font-medium text-gray-500 ">
-                      Don’t have an account?{" "}
+                    <p className="text-sm font-medium text-gray-500 ">
+                      {t("homePageDontHaveAnAccount")}
                       <a
                         onClick={() => {
                           setOpenLoginModal(false);
@@ -318,9 +308,9 @@ const Home = () => {
                         href="#"
                         className="text-blue-700 hover:underline "
                       >
-                        Sign Up
+                        {t("homePageSignup")}
                       </a>
-                    </div>
+                    </p>
                   </form>
                 </div>
               </>
@@ -335,14 +325,14 @@ const Home = () => {
         className="p-4 md:p-6 flex-col gap-6overflow-y-auto overflow-x-hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
       >
         <div className="relative p-4 w-full max-w-md max-h-full">
-          <div className="relative flex justify-center h-96 flex-col gap-[1rem] bg-white rounded-lg shadow ">
+          <div className="relative flex justify-center h-[30rem] flex-col gap-[1rem] bg-white rounded-lg shadow ">
             {registerPending ? (
               <Spinner />
             ) : (
               <>
                 <div className="flex items-center p-4 md:p-5 ">
                   <h3 className="text-xl absolute left-48 font-semibold text-gray-900 flex justify-center">
-                    Sign Up
+                    {t("homePageSignup")}
                   </h3>
                   <button
                     type="button"
@@ -351,7 +341,7 @@ const Home = () => {
                     onClick={() => setOpenRegisterModal(false)}
                   >
                     <CloseIcon />
-                    <span className="sr-only">Close modal</span>
+                    <span className="sr-only">{t("homePageCloseModal")}</span>
                   </button>
                 </div>
                 <div className="p-4 md:p-5">
@@ -365,7 +355,7 @@ const Home = () => {
                         htmlFor="email"
                         className="text-gray-700 font-barlow font-medium text-base leading-[1.5rem]"
                       >
-                        E-mail Address{" "}
+                        {t("homePageEmailAddress")}
                       </label>
                       <Controller
                         name="email"
@@ -377,9 +367,8 @@ const Home = () => {
                         render={({ field }: { field: any }) => (
                           <input
                             type="email"
-                            id="email"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="name@mail.com"
+                            placeholder={t("homePageEmailPlaceholder")}
                             {...field}
                           />
                         )}
@@ -395,7 +384,7 @@ const Home = () => {
                         htmlFor="password"
                         className="text-gray-700 font-barlow font-medium text-base leading-[1.5rem]"
                       >
-                        Password{" "}
+                        {t("homePagePassword")}
                       </label>
                       <div className="flex justify-center items-center">
                         <Controller
@@ -405,8 +394,7 @@ const Home = () => {
                             <>
                               <input
                                 type={passwordVisible ? "text" : "password"}
-                                id="password"
-                                placeholder="Password"
+                                placeholder={t("homePagePasswordPlaceholder")}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                 {...field}
                               />
@@ -446,10 +434,10 @@ const Home = () => {
                       type="submit"
                       className="flex px-[1.1875rem] py-[0.6875rem] justify-center items-center gap-[0.375rem] rounded-[0.3125rem] bg-gradient-to-r from-blue-600 to-blue-900 text-white text-center font-medium text-sm leading-[1.09375rem]"
                     >
-                      Sign Up
+                      {t("homePageSignup")}
                     </button>
-                    <div className="text-sm font-medium text-gray-500 ">
-                      Already have an account?
+                    <p className="text-sm font-medium text-gray-500 ">
+                      {t("homePageAlreadyHaveAnAccount")}
                       <a
                         onClick={() => {
                           setOpenLoginModal(true);
@@ -458,9 +446,9 @@ const Home = () => {
                         href="#"
                         className="text-blue-700 hover:underline "
                       >
-                        Login
+                        {t("homePageLogin")}
                       </a>
-                    </div>
+                    </p>
                   </form>
                 </div>
               </>

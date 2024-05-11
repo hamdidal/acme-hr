@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   PaginationState,
   getCoreRowModel,
@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-table";
 import Card from "../components/Card";
 import Spinner from "@/components/Spinner";
+import { useTranslation } from "react-i18next";
 
 export const MyTable = ({
   data,
@@ -27,12 +28,11 @@ export const MyTable = ({
   isPending: boolean;
   pageSize: number;
 }) => {
+  const { t } = useTranslation();
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: page,
     pageSize: pageSize,
   });
-
-  const [isSuccess, setIsSuccess] = useState(false);
 
   const table = useReactTable({
     data,
@@ -53,22 +53,17 @@ export const MyTable = ({
   });
 
   const handlePreviousPage = () => {
-    setPage(pagination.pageIndex - 1);
+    setPage(page - 1);
   };
 
   const handleNextPage = () => {
-    setPage(pagination.pageIndex + 1);
+    setPage(page + 1);
   };
 
   useEffect(() => {
-    setPageSize(pagination.pageSize);
+    setPage(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pagination.pageSize]);
-
-  useEffect(() => {
-    setPage(pagination.pageIndex);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pagination.pageIndex]);
+  }, [pageSize]);
 
   return (
     <div className="p-2 w-full">
@@ -91,13 +86,13 @@ export const MyTable = ({
       ) : (
         <div className="flex w-full h-[100vh] justify-center items-center">
           <p className="text-4xl font-semibold m-10 text-gray-500">
-            No Jobs Found
+            {t("tableNoJobsFound")}
           </p>
         </div>
       )}
       <div className="h-2" />
       <div className="flex justify-center items-center gap-2 text-gray-500">
-        <div>Show</div>
+        <div> {t("tableShow")}</div>
         <select
           className="p-2 border rounded"
           value={pageSize}
@@ -114,6 +109,7 @@ export const MyTable = ({
         <button
           onClick={handlePreviousPage}
           disabled={!table.getCanPreviousPage()}
+          hidden={page <= 1}
         >
           {"<"}
         </button>
@@ -121,13 +117,14 @@ export const MyTable = ({
           className=" hover:cursor-pointer"
           onClick={handleNextPage}
           disabled={!table.getCanNextPage()}
+          hidden={page >= table.getPageCount() / pageSize}
         >
           {">"}
         </button>
         <span className="flex items-center p-2 gap-1 border rounded">
-          <div>Page</div>
+          <div> {t("tablePage")}</div>
           <strong>
-            {page} of {table.getPageCount() / pageSize}
+            {page} - {table.getPageCount() / pageSize}
           </strong>
         </span>
       </div>

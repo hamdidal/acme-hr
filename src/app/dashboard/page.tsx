@@ -1,9 +1,7 @@
 "use client";
 
-import AcmeIcon from "@/assets/icons/acmeIcon";
 import CloseIcon from "@/assets/icons/closeIcon";
 import ExitIcon from "@/assets/icons/exitIcon";
-import HamburgerMenuIcon from "@/assets/icons/hamburgerMenuIcon";
 import useAuthStore from "@/context/auth-store";
 import { UserModel } from "@/context/type";
 import useUserStore from "@/context/user-store";
@@ -13,9 +11,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   ChangeEventHandler,
-  useCallback,
   useEffect,
-  useMemo,
   useState,
 } from "react";
 import _ from "lodash";
@@ -23,21 +19,19 @@ import { MyTable } from "@/layout/Table";
 import Navbar from "@/layout/Navbar";
 import { useGetAllJobs } from "@/utils/hooks/queries/dashboard";
 import debounce from "lodash.debounce";
-import Spinner from "@/components/Spinner";
-
-const fieldOptions = [
-  { value: "", text: "Select an option" },
-  { value: "name", text: "Name" },
-  { value: "companyName", text: "Company Name" },
-  { value: "location", text: "Location" },
-];
+import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
-  const { setAccessToken, accessToken } = useAuthStore();
+  const { accessToken, clearAccessToken } = useAuthStore();
   const { setUser, user, isSuccess, setIsSuccess } = useUserStore();
   const accessTokenLocal = localStorage.getItem("accessToken");
   const router = useRouter();
-  const { data, isLoading, isSuccess: profileSuccess, refetch:profileRefetch } = useProfile();
+  const {
+    data,
+    isLoading,
+    isSuccess: profileSuccess,
+    refetch: profileRefetch,
+  } = useProfile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedField, setSelectedField] = useState("");
   const [filterText, setFilterText] = useState("");
@@ -45,7 +39,7 @@ const Dashboard = () => {
   const [pageSize, setPageSize] = useState(10);
   const [allJobsData, setAllJobsData] = useState([]);
   const [dataCount, setDataCount] = useState(0);
-
+  const { t } = useTranslation();
   const {
     isPending,
     isError,
@@ -59,6 +53,20 @@ const Dashboard = () => {
     searchQuery: selectedField ? filterText : "",
     searchField: filterText ? selectedField : "",
   });
+
+  const fieldOptions = [
+    { value: "", text: t("dashboardFieldSelectedOption") },
+    { value: "name", text: t("dashboardFieldSelectName") },
+    { value: "companyName", text: t("dashboardFieldSelectCompanyName") },
+    { value: "location", text: t("dashboardFieldSelectLocation") },
+  ];
+
+  const handleLogOut = () => {
+    setTimeout(() => {
+      router.push("/");
+    }, 300);
+    clearAccessToken();
+  };
 
   useEffect(() => {
     if (jobsData?.data?.data as any) {
@@ -95,11 +103,11 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      profileRefetch()
+      profileRefetch();
       refetch();
       setIsSuccess(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess]);
 
   return (
@@ -112,13 +120,13 @@ const Dashboard = () => {
             setIsMenuOpen={setIsMenuOpen}
           />
         </div>
-        <p className="flex w-full h-[5.625rem] justify-center items-center gap-[0.375rem] rounded-[0.3125rem] bg-gradient-to-r from-blue-600 to-blue-900 text-white text-center font-rubik text-4xl font-semibold leading-9">
-          Job List
+        <p className="flex w-full h-[5.625rem] justify-center items-center gap-[0.375rem] rounded-[0.3125rem] bg-gradient-to-r from-blue-600 to-blue-900 text-white text-center text-4xl font-semibold leading-9">
+          {t("dashboardJobList")}
         </p>
         <div className="flex md:flex-col sm:flex-col xs:flex-col px-16 py-6 justify-around items-center gap-[1.4375rem] bg-[#4D9FDB]">
           <div className="flex w-full gap-4 items-center justify-center">
             <p className="flex text-black text-sm font-medium leading-6">
-              Field Filter
+              {t("dashboardFieldFilter")}
             </p>
             <select
               value={selectedField}
@@ -136,7 +144,7 @@ const Dashboard = () => {
           </div>
           <div className="flex w-full gap-4 items-center justify-center">
             <p className="flex text-black text-sm font-medium leading-6">
-              Search
+              {t("dashboardSearch")}
             </p>
             <input
               type="text"
@@ -144,7 +152,7 @@ const Dashboard = () => {
               defaultValue={filterText}
               onChange={debouncedOnChange}
               className="bg-gray-50 border text-opacity-50 text-gray-900 rounded-lg border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
-              placeholder="Type something to see job postings"
+              placeholder={t("dashboardSearchPlaceholder")}
             />
           </div>
         </div>
@@ -171,7 +179,7 @@ const Dashboard = () => {
             onClick={() => setIsMenuOpen(false)}
           >
             <CloseIcon />
-            <span className="sr-only">Close modal</span>
+            <span className="sr-only">{t("hamburgerMenuCloseModal")}</span>
           </button>
           <ul className="font-medium flex flex-col p-4 gap-4">
             <li>
@@ -180,19 +188,19 @@ const Dashboard = () => {
                 aria-current="page"
               >
                 <p className="text-sm underline w-full justify-start pl-4">
-                  Job List
+                  {t("hamburgerMenuJobList")}{" "}
                 </p>
               </a>
             </li>
             <li>
               <a className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100">
-                <p className="text-sm hover:underline w-full justify-start hover:cursor-pointer flex gap-1 items-center text-red-500 pl-4">
-                  <ExitIcon /> Log Out
+                <p onClick={handleLogOut} className="text-sm hover:underline w-full justify-start hover:cursor-pointer flex gap-1 items-center text-red-500 pl-4">
+                  <ExitIcon /> {t("hamburgerMenuLogOut")}
                 </p>{" "}
               </a>
             </li>
             <li>
-              <div className="text-sm flex gap-1 items-center w-full justify-start pl-4 text-gray-900">
+              <p className="text-sm flex gap-1 items-center w-full justify-start pl-4 text-gray-900">
                 {user?.email}{" "}
                 <Image
                   className="w-8 h-8 rounded-full"
@@ -201,7 +209,7 @@ const Dashboard = () => {
                   width={10}
                   height={10}
                 />
-              </div>
+              </p>
             </li>
           </ul>
           <Navbar />

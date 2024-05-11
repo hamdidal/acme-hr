@@ -1,6 +1,7 @@
 import { getAllJobs, getAllJobsWithoutFilter, getJobById, postApplyJob, postWithdrawJob } from "@/services/be-api/dashboard/endpoints";
 import { GetAllJobsDto, GetJobByIdDto } from "@/services/be-api/dashboard/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
 export const useGetAllJobs  = (params: GetAllJobsDto) => {
@@ -38,12 +39,12 @@ export const useGetJobById  = (id: string | number) => {
 
 export const useJobApply = () => {
   const queryClient = useQueryClient();
-
+  const {t} = useTranslation()
   const { mutate, isPending, isSuccess, isError, data } = useMutation({
     mutationFn: postApplyJob,
     onSuccess: (success) => {
       queryClient.invalidateQueries({ queryKey: ["apply"] });
-      toast.success("Apply Success", {
+      toast.success(t("applySuccess"), {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -61,8 +62,8 @@ export const useJobApply = () => {
         theme: "light",
       });
     },
-    onError: (error) => {
-      toast.error("Apply Failed", {
+    onError: () => {
+      toast.error(t("applyFailed"), {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -77,7 +78,6 @@ export const useJobApply = () => {
         progressStyle: { backgroundColor: "white" },
         theme: "dark",
       });
-      console.error(error);
     },
   });
 
@@ -92,12 +92,12 @@ export const useJobApply = () => {
 
 export const useJobWithdraw = () => {
   const queryClient = useQueryClient();
-
+  const {t} = useTranslation()
   const { mutate, isPending, isSuccess, isError, data } = useMutation({
     mutationFn: postWithdrawJob,
     onSuccess: (success) => {
       queryClient.invalidateQueries({ queryKey: ["withdraw"] });
-      toast.success("Withdraw Success", {
+      toast.success(t("withdrawSuccess"), {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -115,8 +115,8 @@ export const useJobWithdraw = () => {
         theme: "light",
       });
     },
-    onError: (error) => {
-      toast.error("Withdraw Failed", {
+    onError: () => {
+      toast.error(t("withdrawFailed"), {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -131,7 +131,6 @@ export const useJobWithdraw = () => {
         progressStyle: { backgroundColor: "white" },
         theme: "dark",
       });
-      console.error(error);
     },
   });
 

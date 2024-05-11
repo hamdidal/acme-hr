@@ -1,15 +1,17 @@
 import { getProfile, login, register } from "@/services/be-api/auth/endpoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
 export const useLoginMutation = () => {
+  const {t} = useTranslation()
   const queryClient = useQueryClient();
 
   const { mutate, isPending, isSuccess, isError, data } = useMutation({
     mutationFn: login,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["login"] });
-      toast.success("Login Success", {
+      toast.success(t("loginSuccess"), {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -27,8 +29,8 @@ export const useLoginMutation = () => {
         theme: "light",
       });
     },
-    onError: (error) => {
-      toast.error("Login Failed", {
+    onError: () => {
+      toast.error(t("loginFailed"), {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -43,7 +45,6 @@ export const useLoginMutation = () => {
         progressStyle: { backgroundColor: "white" },
         theme: "dark",
       });
-      console.error(error);
     },
   });
 
@@ -58,12 +59,12 @@ export const useLoginMutation = () => {
 
 export const useRegisterMutation = () => {
   const queryClient = useQueryClient();
-
+  const {t} = useTranslation()
   const { mutate, isPending, isSuccess, isError, data } = useMutation({
     mutationFn: register,
     onSuccess: (success) => {
       queryClient.invalidateQueries({ queryKey: ["register"] });
-      toast.success("Login Success", {
+      toast.success(t("registerSuccess"), {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -81,8 +82,8 @@ export const useRegisterMutation = () => {
         theme: "light",
       });
     },
-    onError: (error) => {
-      toast.error(error.message, {
+    onError: () => {
+      toast.error(t("registerFailed"), {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -97,7 +98,6 @@ export const useRegisterMutation = () => {
         progressStyle: { backgroundColor: "white" },
         theme: "dark",
       });
-      console.error(error);
     },
   });
 

@@ -7,10 +7,11 @@ import useUserStore from "@/context/user-store";
 import Modal from "./Modal";
 import KeywordsIcon from "@/assets/icons/keywordIcon";
 import { useJobApply, useJobWithdraw } from "@/utils/hooks/queries/dashboard";
+import { useTranslation } from "react-i18next";
 
 export const Card = ({ row }: { row: any }) => {
+  const { t } = useTranslation();
   const { user, setIsSuccess } = useUserStore();
-
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -48,7 +49,7 @@ export const Card = ({ row }: { row: any }) => {
       setIsSuccess(withdrawSuccess);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [applySuccess, withdrawSuccess]);  
+  }, [applySuccess, withdrawSuccess]);
 
   const handleWithdraw = ({ id }: any) => {
     withdrawMutate(selectedId);
@@ -58,7 +59,7 @@ export const Card = ({ row }: { row: any }) => {
     <div className="flex xs:flex-col justify-between w-full border rounded-lg bg-white shadow-md">
       <div className="flex flex-col justify-center gap-4 w-96 p-5">
         <div className="flex items-baseline gap-2">
-          <p className="font-rubik font-semibold text-blue-500 text-2xl leading-125">
+          <p className="font-semibold text-blue-500 text-2xl leading-125">
             {row?.name}
           </p>
           <p className="font-barlow font-bold text-blue-500 text-xs leading-150">
@@ -67,17 +68,16 @@ export const Card = ({ row }: { row: any }) => {
         </div>
         <div className="flex items-baseline gap-2">
           <p className="font-barlow font-medium text-gray-500 text-base leading-150">
-            by
+            {t("cardBy")}
           </p>
-          <p className="font-rubik font-semibold text-gray-700 text-lg leading-125">
+          <p className="font-semibold text-gray-700 text-lg leading-125">
             {row.companyName}
           </p>
-          <div className="text-gray-900">{isJobApplied.toString()}</div>
         </div>
         <div className="flex justify-around">
           <div className="flex flex-col gap-2 items-center justify-start">
             <p className="flex items-center justify-center gap-2 font-barlow font-bold text-blue-500 text-base leading-150">
-              <SalaryIcon /> Salary
+              <SalaryIcon /> {t("cardSalary")}
             </p>
             <p className="flex font-barlow font-medium text-gray-700 text-base leading-150 items-center">
               {row.salary}$
@@ -85,22 +85,22 @@ export const Card = ({ row }: { row: any }) => {
           </div>
           <div className="flex flex-col gap-2">
             <p className="flex items-center justify-center gap-2 font-barlow font-bold text-blue-500 text-base leading-150">
-              <KeywordsIcon /> Keywords
+              <KeywordsIcon /> {t("cardKeywords")}
             </p>
-            <p className="flex flex-col font-barlow font-medium text-gray-700 text-base leading-150 items-center">
+            <div className="flex flex-col font-barlow font-medium text-gray-700 text-base leading-150 items-center">
               {row.keywords.slice(0 - 2).map((keyword: string) => (
                 <p key={keyword}>{keyword}</p>
               ))}
-            </p>
+            </div>
           </div>
         </div>
         <div className="flex gap-4">
           {isJobApplied ? null : (
             <button
               onClick={() => handleShowModal(row.id)}
-              className="flex p-2 w-1/2 justify-center items-start rounded-md border border-gray-200 shadow-md text-gray-400 text-center font-rubik text-base font-medium"
+              className="flex p-2 w-1/2 justify-center items-start rounded-md border border-gray-200 shadow-md text-gray-400 text-center text-base font-medium"
             >
-              show details
+              {t("cardShowDetails")}
             </button>
           )}
           {isJobApplied ? (
@@ -108,7 +108,7 @@ export const Card = ({ row }: { row: any }) => {
               onClick={() => handleWithdrawModal(row.id)}
               className="rounded-lg border border-gray-300 bg-red-500 shadow-md flex py-2 px-6 justify-center items-start"
             >
-              withdraw
+              {t("cardWithdraw")}
             </button>
           ) : null}
         </div>
@@ -124,7 +124,6 @@ export const Card = ({ row }: { row: any }) => {
         <Modal
           onClose={handleCloseModal}
           onConfirm={(id) => handleApply(id)}
-          message="apply"
           isApply={true}
           id={selectedId}
         />
@@ -133,7 +132,6 @@ export const Card = ({ row }: { row: any }) => {
         <Modal
           onClose={handleCloseModal}
           onConfirm={(id) => handleWithdraw(id)}
-          message="Are you sure?"
           isApply={false}
           id={selectedId}
         />
