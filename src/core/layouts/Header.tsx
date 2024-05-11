@@ -5,7 +5,7 @@ import Image from "next/image";
 import HamburgerMenuIcon from "@/assets/icons/hamburgerMenuIcon";
 import { LanguagePickerDropdown } from "./LanguagePickerDropdown";
 import { useTranslation } from "react-i18next";
-import useAuthStore from "@/context/auth-store";
+import useAuthStore from "@/stores/auth-store";
 import { useRouter } from "next/navigation";
 
 const Header = ({ user, isMenuOpen, setIsMenuOpen }: any) => {

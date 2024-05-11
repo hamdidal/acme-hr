@@ -8,12 +8,12 @@ import IgIcon from "@/assets/icons/igIcon";
 import TwIcon from "@/assets/icons/twIcon";
 import UserIcon from "@/assets/icons/userIcon";
 import RegisterIcon from "@/assets/icons/userIcon copy";
-import useAuthStore from "@/context/auth-store";
+import useAuthStore from "@/stores/auth-store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   useLoginMutation,
   useRegisterMutation,
-} from "@/utils/hooks/queries/auth";
+} from "@/hooks/queries/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -21,7 +21,7 @@ import * as yup from "yup";
 import Spinner from "@/components/Spinner";
 import CloseIcon from "@/assets/icons/closeIcon";
 import { useTranslation } from "react-i18next";
-import { LanguagePickerDropdown } from "@/layout/LanguagePickerDropdown";
+import { LanguagePickerDropdown } from "@/core/layouts/LanguagePickerDropdown";
 
 export type LoginFormValues = {
   email: string;

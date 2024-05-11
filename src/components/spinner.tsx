@@ -1,5 +1,5 @@
 import Lottie from "react-lottie";
-import spinner from "../assets/spinner.json"
+import spinner from "@/assets/spinner.json"
 
 const Spinner = () => {
   const defaultOptions = {

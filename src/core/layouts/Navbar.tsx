@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import useUserStore from "@/context/user-store";
+import useUserStore from "@/stores/user-store";
 import Col from "@/components/Col";
-import { useGetAllJobsWithoutFilter } from "@/utils/hooks/queries/dashboard";
+import { useGetAllJobsWithoutFilter } from "@/hooks/queries/dashboard";
 import Spinner from "@/components/Spinner";
 import { useTranslation } from "react-i18next";
 

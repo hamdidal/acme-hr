@@ -2,11 +2,11 @@
 
 import CloseIcon from "@/assets/icons/closeIcon";
 import ExitIcon from "@/assets/icons/exitIcon";
-import useAuthStore from "@/context/auth-store";
-import { UserModel } from "@/context/type";
-import useUserStore from "@/context/user-store";
-import Header from "@/layout/Header";
-import { useProfile } from "@/utils/hooks/queries/auth";
+import useAuthStore from "@/stores/auth-store";
+import { UserModel } from "@/stores/types";
+import useUserStore from "@/stores/user-store";
+import Header from "@/core/layouts/Header";
+import { useProfile } from "@/hooks/queries/auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
@@ -15,16 +15,15 @@ import {
   useState,
 } from "react";
 import _ from "lodash";
-import { MyTable } from "@/layout/Table";
-import Navbar from "@/layout/Navbar";
-import { useGetAllJobs } from "@/utils/hooks/queries/dashboard";
+import { MyTable } from "@/core/layouts/Table";
+import Navbar from "@/core/layouts/Navbar";
+import { useGetAllJobs } from "@/hooks/queries/dashboard";
 import debounce from "lodash.debounce";
 import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
   const { accessToken, clearAccessToken } = useAuthStore();
   const { setUser, user, isSuccess, setIsSuccess } = useUserStore();
-  const accessTokenLocal = localStorage.getItem("accessToken");
   const router = useRouter();
   const {
     data,
@@ -81,12 +80,6 @@ const Dashboard = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data, profileSuccess, isSuccess]);
-
-  useEffect(() => {
-    if (!accessToken && !accessTokenLocal) {
-      router.push("/");
-    }
-  }, [accessToken, accessTokenLocal, router]);
 
   const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setFilterText(e.target.value);

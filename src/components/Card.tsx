@@ -2,11 +2,11 @@
 import SalaryIcon from "@/assets/icons/salaryIcon";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import Amazon from "../assets/images/amazon.png";
-import useUserStore from "@/context/user-store";
+import Amazon from "@/assets/images/amazon.png";
+import useUserStore from "@/stores/user-store";
 import Modal from "./Modal";
 import KeywordsIcon from "@/assets/icons/keywordIcon";
-import { useJobApply, useJobWithdraw } from "@/utils/hooks/queries/dashboard";
+import { useJobApply, useJobWithdraw } from "@/hooks/queries/dashboard";
 import { useTranslation } from "react-i18next";
 
 export const Card = ({ row }: { row: any }) => {
@@ -14,13 +14,13 @@ export const Card = ({ row }: { row: any }) => {
   const { user, setIsSuccess } = useUserStore();
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedId, setSelectedId] = useState("");
   const isJobApplied = user.appliedJobs.some((job: any) => job === row.id);
-  const { mutate: applyMutate, isSuccess: applySuccess } = useJobApply();
-  const { mutate: withdrawMutate, isSuccess: withdrawSuccess } =
+  const { mutate: applyMutate, isSuccess: applySuccess, isPending:applyPending } = useJobApply();
+  const { mutate: withdrawMutate, isSuccess: withdrawSuccess, isPending:withdrawPending } =
     useJobWithdraw();
 
-  const handleShowModal = (id: any) => {
+  const handleShowModal = (id: string) => {
     setSelectedId(id);
     setShowDetailModal(true);
   };
@@ -30,7 +30,9 @@ export const Card = ({ row }: { row: any }) => {
     setShowDetailModal(false);
   };
 
-  const handleWithdrawModal = (id: any) => {
+  const handleWithdrawModal = (id: string) => {
+    console.log(typeof id, id);
+    
     setSelectedId(id);
     setShowWithdrawModal(true);
   };
@@ -125,6 +127,7 @@ export const Card = ({ row }: { row: any }) => {
           onClose={handleCloseModal}
           onConfirm={(id) => handleApply(id)}
           isApply={true}
+          isPending={applyPending}
           id={selectedId}
         />
       )}
@@ -133,6 +136,7 @@ export const Card = ({ row }: { row: any }) => {
           onClose={handleCloseModal}
           onConfirm={(id) => handleWithdraw(id)}
           isApply={false}
+          isPending={withdrawPending}
           id={selectedId}
         />
       )}

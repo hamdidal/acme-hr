@@ -1,6 +1,6 @@
 import LocationIcon from "@/assets/icons/locationIcon";
 import SalaryIcon from "@/assets/icons/salaryIcon";
-import { useGetJobById } from "@/utils/hooks/queries/dashboard";
+import { useGetJobById } from "@/hooks/queries/dashboard";
 import React, { useEffect, useState } from "react";
 import Spinner from "./Spinner";
 import { useTranslation } from "react-i18next";
@@ -11,6 +11,7 @@ export interface ModalProps {
   message?: string;
   isApply: boolean;
   id: any;
+  isPending?: boolean;
 }
 
 export interface CompanyModel {
@@ -24,7 +25,13 @@ export interface CompanyModel {
   salary: number;
 }
 
-const Modal = ({ onClose, onConfirm, isApply, id }: ModalProps) => {
+const Modal = ({
+  onClose,
+  onConfirm,
+  isApply,
+  id,
+  isPending: isLoading,
+}: ModalProps) => {
   const [modalData, setModalData] = useState<CompanyModel>({} as CompanyModel);
   const { t } = useTranslation();
   const { data, isSuccess, isPending } = useGetJobById(id);
@@ -36,35 +43,45 @@ const Modal = ({ onClose, onConfirm, isApply, id }: ModalProps) => {
   }, [data?.data, isSuccess]);
 
   return !isApply ? (
-    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
-      <div className="bg-white w-96 flex flex-col items-center justify-center rounded-lg gap-14 shadow-lg p-6">
-        <div className="flex flex-col gap-2 items-center">
-          <p className="text-lg text-gray-800">
-            {t("withdrawModalAreYouSure")}
-          </p>
-          <p className="text-md text-gray-800">
-            {t("withdrawModalWithdrawApplication")}{" "}
-          </p>
-        </div>
-        <div className="flex w-full justify-around">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 w-full bg-gray-300 text-gray-800 rounded-md mr-2 hover:bg-gray-400 focus:outline-none focus:bg-gray-400"
-          >
-            {t("withdrawModalCancel")}{" "}
-          </button>
-          <button
-            onClick={onConfirm}
-            className="px-4 py-2 w-full bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
-          >
-            {t("withdrawModalWithdraw")}{" "}
-          </button>
+    isLoading ? (
+      <div className="flex flex-col items-center justify-center rounded-lg shadow-custom-shadow gap-6 max-w-[64rem] py-4 px-6 bg-white md:w-[80%] xs:w-[90%] sm:w-[90%] w-[50%] xs:h-[70%] sm:h-[70%] md:h-[70%] h-fit min-h-[50%]">
+        <Spinner />
+      </div>
+    ) : (
+      <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+        <div className="bg-white w-96 flex flex-col items-center justify-center rounded-lg gap-14 shadow-lg p-6">
+          <div className="flex flex-col gap-2 items-center">
+            <p className="text-lg text-gray-800">
+              {t("withdrawModalAreYouSure")}
+            </p>
+            <p className="text-md text-gray-800">
+              {t("withdrawModalWithdrawApplication")}{" "}
+            </p>
+          </div>
+          <div className="flex w-full justify-around">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 w-full bg-gray-300 text-gray-800 rounded-md mr-2 hover:bg-gray-400 focus:outline-none focus:bg-gray-400"
+            >
+              {t("withdrawModalCancel")}{" "}
+            </button>
+            <button
+              onClick={onConfirm}
+              className="px-4 py-2 w-full bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
+            >
+              {t("withdrawModalWithdraw")}{" "}
+            </button>
+          </div>
         </div>
       </div>
+    )
+  ) : isLoading ? (
+    <div className="flex flex-col items-center justify-center rounded-lg shadow-custom-shadow gap-6 max-w-[64rem] py-4 px-6 bg-white md:w-[80%] xs:w-[90%] sm:w-[90%] w-[50%] xs:h-[70%] sm:h-[70%] md:h-[70%] h-fit min-h-[50%]">
+      <Spinner />
     </div>
   ) : (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
-      <div className="flex flex-col items-center justify-center rounded-lg shadow-custom-shadow gap-6 max-w-[64rem] py-4 px-6 bg-white text-gray-700 md:w-[80%] xs:w-[90%] sm:w-[90%] w-[50%] xs:h-[70%] sm:h-[70%] md:h-[70%] lg:min-h-[50%] h-[50%]">
+      <div className="flex flex-col items-center justify-center rounded-lg shadow-custom-shadow gap-6 max-w-[64rem] py-4 px-6 bg-white text-gray-700 md:w-[80%] xs:w-[90%] sm:w-[90%] w-[50%] xs:h-[70%] sm:h-[70%] md:h-[70%] h-fit min-h-[50%]">
         {isPending ? (
           <Spinner />
         ) : (

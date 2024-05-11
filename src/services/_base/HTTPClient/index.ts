@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosHeaders, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
-import { clearTokenFromStorage, getTokenFromStorage } from '../../../utils/hooks/queries/storage'
+import { clearTokenFromStorage, getTokenFromStorage } from '@/hooks/queries/storage'
 
 export default class HTTPClient {
     private axiosInstance: AxiosInstance

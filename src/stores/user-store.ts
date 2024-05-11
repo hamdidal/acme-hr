@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-import { UserState } from "./type";
+import { UserState } from "./types";
 
 const useUserStore = create<UserState>()(
   persist(

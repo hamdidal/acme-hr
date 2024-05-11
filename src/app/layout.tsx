@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
 import "./globals.css";
-import Provider from "../utils/provider/_provider";
+import QueryProvider from "@/utils/provider/query-provider";
+import Guard from "@/utils/provider/guard";
 
 const rubik = Rubik({ subsets: ["latin"] });
 
@@ -15,13 +16,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <body className={rubik.className}>
-        <Provider>
-          {children}
-        </Provider>
+        <Guard>
+          <QueryProvider>{children}</QueryProvider>
+        </Guard>
       </body>
     </html>
   );
