@@ -8,6 +8,8 @@ export interface UserModel {
 export type UserState = {
   user: UserModel;
   setUser: (userData: UserModel) => void;
+  isSuccess: boolean;
+  setIsSuccess: (success) => void; 
 };
 type AuthState = {
   accessToken: string | null;

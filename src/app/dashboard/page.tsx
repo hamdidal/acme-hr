@@ -34,16 +34,17 @@ const fieldOptions = [
 
 const Dashboard = () => {
   const { setAccessToken, accessToken } = useAuthStore();
-  const { setUser, user } = useUserStore();
+  const { setUser, user, isSuccess, setIsSuccess } = useUserStore();
   const accessTokenLocal = localStorage.getItem("accessToken");
   const router = useRouter();
-  const { data, isLoading, isSuccess, error } = useProfile();
+  const { data, isLoading, isSuccess: profileSuccess, refetch:profileRefetch } = useProfile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedField, setSelectedField] = useState("name");
+  const [selectedField, setSelectedField] = useState("");
   const [filterText, setFilterText] = useState("");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [allJobsData, setAllJobsData] = useState([]);
+  const [dataCount, setDataCount] = useState(0);
 
   const {
     isPending,
@@ -53,24 +54,25 @@ const Dashboard = () => {
     isPlaceholderData,
     refetch,
   } = useGetAllJobs({
-    page,
+    page: page,
     perPage: pageSize,
-    searchQuery: filterText || undefined,
-    searchField: selectedField,
+    searchQuery: selectedField ? filterText : "",
+    searchField: filterText ? selectedField : "",
   });
 
   useEffect(() => {
-    if ((jobsData as { data: any })?.data?.data) {
-      setAllJobsData((jobsData as { data: any })?.data.data);
+    if (jobsData?.data?.data as any) {
+      setAllJobsData(jobsData?.data.data as any);
+      setDataCount(jobsData.data.meta.total as any);
     }
-  }, [jobsData?.data]);
+  }, [jobsData?.data.data]);
 
   useEffect(() => {
-    if (data?.data && isSuccess) {
+    if (data?.data && profileSuccess) {
       setUser(data?.data as UserModel);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.data, isSuccess]);
+  }, [data?.data, profileSuccess, isSuccess]);
 
   useEffect(() => {
     if (!accessToken && !accessTokenLocal) {
@@ -80,9 +82,25 @@ const Dashboard = () => {
 
   const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setFilterText(e.target.value);
+    setSelectedField("name");
   };
 
+  useEffect(() => {
+    if (filterText === "") {
+      setSelectedField("");
+    }
+  }, [filterText]);
+
   const debouncedOnChange = debounce(onChange, 1000);
+
+  useEffect(() => {
+    if (isSuccess) {
+      profileRefetch()
+      refetch();
+      setIsSuccess(false);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
 
   return (
     <div className="flex bg-white w-full h-full">
@@ -122,6 +140,7 @@ const Dashboard = () => {
             </p>
             <input
               type="text"
+              disabled={selectedField === ""}
               defaultValue={filterText}
               onChange={debouncedOnChange}
               className="bg-gray-50 border text-opacity-50 text-gray-900 rounded-lg border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
@@ -129,25 +148,17 @@ const Dashboard = () => {
             />
           </div>
         </div>
-        {isPending ? (
-          <div className="flex w-full h-[100vh] justify-start items-center">
-          <Spinner />
-          </div>
-        ) : allJobsData.length > 0 ? (
-          <div className="flex w-full justify-center items-center">
-            <MyTable
-              data={allJobsData}
-              setPage={setPage}
-              setPageSize={setPageSize}
-            />
-          </div>
-        ) : (
-          <div className="flex w-full h-[100vh] justify-center items-center">
-            <p className="text-4xl font-semibold m-10 text-gray-500">
-              No Jobs Found
-            </p>
-          </div>
-        )}
+        <div className="flex w-full justify-center items-center">
+          <MyTable
+            page={page}
+            data={allJobsData}
+            setPage={setPage}
+            setPageSize={setPageSize}
+            count={dataCount}
+            isPending={isPending}
+            pageSize={pageSize}
+          />
+        </div>
       </div>
       <div className="flex w-1/4 h-full xs:hidden sm:hidden md:hidden shadow-custom-shadow ">
         <Navbar />

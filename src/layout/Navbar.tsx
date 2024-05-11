@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import useUserStore from "@/context/user-store";
 import Col from "@/components/Col";
+import { useGetAllJobsWithoutFilter } from "@/utils/hooks/queries/dashboard";
+import Spinner from "@/components/Spinner";
 
 const Navbar = () => {
+  const [allData, setAllData] = useState<any>([]);
+  const { data } = useGetAllJobsWithoutFilter();
   const { user } = useUserStore();
-  return (
+
+  useEffect(() => {
+    if (data?.data.data as any) {
+      setAllData(data?.data.data);
+    }
+  }, [data?.data]);
+
+  const matchedJobs = allData.filter((job: any) =>
+    user.appliedJobs.some((appliedJob) => appliedJob === job.id)
+  );
+
+  return allData.length > 0 ? (
     <div className="flex w-full lg:h-[100vh] md:h-[100vh] sm:h-[85vh] xs:h-[85vh] overflow-auto flex-col items-start gap-6 py-16 px-6 flex-1 self-stretch bg-white shadow-lg">
       <div className="flex flex-col justify-center items-center gap-4 self-stretch">
         <p className="text-blue-600 text-center font-rubik font-semibold text-lg leading-125">
@@ -28,9 +43,13 @@ const Navbar = () => {
           </div>
         ) : null}
       </div>
-      {user.appliedJobs.map((row, index) => (
+      {matchedJobs.map((row: any, index: any) => (
         <Col key={index} row={row} />
       ))}
+    </div>
+  ) : (
+    <div className="flex w-full justify-center lg:h-[100vh] md:h-[100vh] sm:h-[85vh] xs:h-[85vh] overflow-auto flex-col items-start gap-6 py-16 px-6 flex-1 self-stretch bg-white shadow-lg">
+      <Spinner />
     </div>
   );
 };

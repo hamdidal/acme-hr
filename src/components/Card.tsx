@@ -1,18 +1,23 @@
 /* eslint-disable @next/next/no-img-element */
 import SalaryIcon from "@/assets/icons/salaryIcon";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Amazon from "../assets/images/amazon.png";
 import useUserStore from "@/context/user-store";
 import Modal from "./Modal";
 import KeywordsIcon from "@/assets/icons/keywordIcon";
+import { useJobApply, useJobWithdraw } from "@/utils/hooks/queries/dashboard";
 
 export const Card = ({ row }: { row: any }) => {
-  const { user } = useUserStore();
+  const { user, setIsSuccess } = useUserStore();
 
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const isJobApplied = user.appliedJobs.some((job: any) => job === row.id);
+  const { mutate: applyMutate, isSuccess: applySuccess } = useJobApply();
+  const { mutate: withdrawMutate, isSuccess: withdrawSuccess } =
+    useJobWithdraw();
 
   const handleShowModal = (id: any) => {
     setSelectedId(id);
@@ -29,8 +34,25 @@ export const Card = ({ row }: { row: any }) => {
     setShowWithdrawModal(true);
   };
 
-  const handleApply = ({ id }: any) => {};
-  const handleWithdraw = ({ id }: any) => {};
+  const handleApply = ({ id }: any) => {
+    applyMutate(selectedId);
+  };
+
+  useEffect(() => {
+    if (applySuccess) {
+      handleCloseModal();
+      setIsSuccess(applySuccess);
+    }
+    if (withdrawSuccess) {
+      handleCloseModal();
+      setIsSuccess(withdrawSuccess);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [applySuccess, withdrawSuccess]);  
+
+  const handleWithdraw = ({ id }: any) => {
+    withdrawMutate(selectedId);
+  };
 
   return (
     <div className="flex xs:flex-col justify-between w-full border rounded-lg bg-white shadow-md">
@@ -50,6 +72,7 @@ export const Card = ({ row }: { row: any }) => {
           <p className="font-rubik font-semibold text-gray-700 text-lg leading-125">
             {row.companyName}
           </p>
+          <div className="text-gray-900">{isJobApplied.toString()}</div>
         </div>
         <div className="flex justify-around">
           <div className="flex flex-col gap-2 items-center justify-start">
@@ -72,20 +95,22 @@ export const Card = ({ row }: { row: any }) => {
           </div>
         </div>
         <div className="flex gap-4">
-          <button
-            onClick={()=> handleShowModal(row.id)}
-            className="flex p-2 w-1/2 justify-center items-start rounded-md border border-gray-200 shadow-md text-gray-400 text-center font-rubik text-base font-medium"
-          >
-            show details
-          </button>
-          {/* {user.appliedJobs.find((job: any) => job.id === row.id) ? ( */}
-          <button
-            onClick={() => handleWithdrawModal(row.id)}
-            className="rounded-lg border border-gray-300 bg-red-500 shadow-md flex py-2 px-6 justify-center items-start"
-          >
-            withdraw
-          </button>
-          {/* ) : null} */}
+          {isJobApplied ? null : (
+            <button
+              onClick={() => handleShowModal(row.id)}
+              className="flex p-2 w-1/2 justify-center items-start rounded-md border border-gray-200 shadow-md text-gray-400 text-center font-rubik text-base font-medium"
+            >
+              show details
+            </button>
+          )}
+          {isJobApplied ? (
+            <button
+              onClick={() => handleWithdrawModal(row.id)}
+              className="rounded-lg border border-gray-300 bg-red-500 shadow-md flex py-2 px-6 justify-center items-start"
+            >
+              withdraw
+            </button>
+          ) : null}
         </div>
       </div>
       <div

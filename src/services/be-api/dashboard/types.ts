@@ -1,8 +1,8 @@
 import { RequestParams } from "@/services/types";
 
 export interface GetAllJobsDto {
-  page: number;
-  perPage: number;
+  page: number | undefined;
+  perPage: number | undefined;
   searchField: string | undefined;
   searchQuery: string | undefined;
 }

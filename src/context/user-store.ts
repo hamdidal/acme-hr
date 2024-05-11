@@ -5,6 +5,7 @@ import { UserState } from "./type";
 
 const useUserStore = create<UserState>()(
   persist(
+
     (set) => ({
       user: {
         id: "",
@@ -13,6 +14,8 @@ const useUserStore = create<UserState>()(
         appliedJobs: [],
       },
       setUser: (userData) => set(() => ({ user: userData })),
+      isSuccess: false,
+      setIsSuccess: (success) => set(() => ({ isSuccess: success })),
     }),
     {
       name: "userStore",
