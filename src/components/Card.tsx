@@ -70,7 +70,7 @@ export const Card: FC<CardProps> = ({
       setIsSuccess(withdrawSuccess);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [applySuccess, withdrawSuccess]);
+  }, [applySuccess, withdrawSuccess]);  
 
   return (
     <>
@@ -134,6 +134,7 @@ export const Card: FC<CardProps> = ({
             {isJobApplied ? null : (
               <div data-testid="card-apply-modal">
                 <button
+                  disabled={applyPending || withdrawPending}
                   onClick={() => handleShowModal(id)}
                   className="flex py-2 px-6 justify-center items-start rounded-md border border-gray-200 shadow-md text-gray-400 text-center text-base font-medium"
                 >
@@ -144,6 +145,7 @@ export const Card: FC<CardProps> = ({
             {isJobApplied ? (
               <div data-testid="card-withdraw-modal">
                 <button
+                  disabled={applyPending || withdrawPending}
                   onClick={() => handleWithdrawModal(id)}
                   className="rounded-lg border border-gray-300 bg-red-500 shadow-md flex py-2 px-6 justify-center items-start"
                 >
@@ -162,27 +164,29 @@ export const Card: FC<CardProps> = ({
         </div>
       </div>
       {showDetailModal && (
-          <div className="z-50 w-1/2 h-full" data-testid="card-modal">
-            <Modal
-              onClose={handleCloseModal}
-              onConfirm={handleApply}
-              isApply={true}
-              isPending={applyPending}
-              id={selectedId}
-            />
-          </div>
-        )}
-        {showWithdrawModal && (
-          <div className="z-50 w-1/2 h-full" data-testid="card-modal">
-            <Modal
-              onClose={handleCloseModal}
-              onConfirm={handleWithdraw}
-              isApply={false}
-              isPending={withdrawPending}
-              id={selectedId}
-            />
-          </div>
-        )}
+        <div className="z-50 w-1/2 h-full" data-testid="card-modal">
+          <Modal
+            onClose={handleCloseModal}
+            onConfirm={handleApply}
+            isApply={true}
+            isPending={applyPending}
+            id={selectedId}
+            isJobSuccess={applySuccess}
+          />
+        </div>
+      )}
+      {showWithdrawModal && (
+        <div className="z-50 w-1/2 h-full" data-testid="card-modal">
+          <Modal
+            onClose={handleCloseModal}
+            onConfirm={handleWithdraw}
+            isApply={false}
+            isPending={withdrawPending}
+            id={selectedId}
+            isJobSuccess={withdrawSuccess}
+          />
+        </div>
+      )}
     </>
   );
 };

@@ -12,18 +12,6 @@ describe("Modal Component", () => {
     cy.url().should("include", "/dashboard", { timeout: 10000 });
   });
 
-//   it("renders correctly when isApply is false", () => {
-//     cy.get('[data-testid="card-withdraw-modal"] > button')
-//       .contains("Withdraw Application")
-//       .click();
-//     cy.get('[data-testid="card-withdraw-modal"]').should("exist");
-
-//     cy.get('[data-testid="modal-content-title"]').should("exist");
-//     cy.get('[data-testid="modal-content-message"]').should("exist");
-//     cy.get('[data-testid="modal-buttons"]').should("exist");
-//     cy.get('[data-testid="modal-buttons"] > button').contains("Cancel").click();
-//   });
-
   it("renders correctly when isApply is true", () => {
     cy.get('[data-testid="card-apply-modal"] > button')
       .contains("Show Details")

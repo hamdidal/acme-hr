@@ -97,16 +97,16 @@ const Home = () => {
 
   const handleLogin = async (e: LoginFormValues) => {
     mutate({ data: e });
-    reset(),
-    resetField("email"),
+    reset()
+    resetField("email")
     resetField("password")
   };
 
   const handleRegister = async (e: LoginFormValues) => {
     registerMutate({ data: e });
     reset()
-    reset(),
-    resetField("email"),
+    reset()
+    resetField("email")
     resetField("password")
   };
 

@@ -12,6 +12,7 @@ export interface ModalProps {
   isApply: boolean;
   id: any;
   isPending?: boolean;
+  isJobSuccess?: boolean;
 }
 
 export interface CompanyModel {
@@ -30,6 +31,7 @@ const Modal = ({
   onConfirm,
   isApply,
   id,
+  isJobSuccess,
   isPending: isLoading,
 }: ModalProps) => {
   const { t } = useTranslation();
@@ -38,7 +40,7 @@ const Modal = ({
   return !isApply ? (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
       <div className="bg-white w-96 flex flex-col items-center justify-center rounded-lg gap-14 shadow-lg p-6">
-        {isLoading ? (
+        {isLoading || isJobSuccess ? (
           <Spinner />
         ) : (
           <div className="flex flex-col gap-10">
@@ -77,10 +79,10 @@ const Modal = ({
         )}
       </div>
     </div>
-  ) : 
+  ) : (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
       <div className="flex z-50 flex-col items-center justify-center rounded-lg shadow-custom-shadow gap-6 max-w-[64rem] py-4 px-6 bg-white text-gray-700 md:w-[80%] xs:w-[90%] sm:w-[90%] w-[50%] xs:h-[70%] sm:h-[70%] md:h-[70%] h-fit min-h-[50%]">
-        {isLoading ? (
+        {isLoading || !isSuccess || isJobSuccess ? (
           <Spinner />
         ) : (
           <>
@@ -178,6 +180,7 @@ const Modal = ({
         )}
       </div>
     </div>
+  );
 };
 
 export default Modal;
