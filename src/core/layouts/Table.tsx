@@ -66,8 +66,6 @@ export const JobTable: FC<JobTableProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageSize]);
 
-  console.log("11", table.getPageCount(), pageSize);
-
   return (
     <div className="p-2 w-full">
       {isPending ? (
