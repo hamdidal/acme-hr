@@ -32,15 +32,8 @@ const Modal = ({
   id,
   isPending: isLoading,
 }: ModalProps) => {
-  const [modalData, setModalData] = useState<CompanyModel>({} as CompanyModel);
   const { t } = useTranslation();
   const { data, isSuccess, isPending } = useGetJobById(id);
-
-  useEffect(() => {
-    if (data?.data && isSuccess) {
-      setModalData(data?.data as any);
-    }
-  }, [data?.data, isSuccess]);
 
   return !isApply ? (
     isLoading ? (
@@ -97,7 +90,7 @@ const Modal = ({
                       <LocationIcon /> {t("applyModalLocation")}
                     </p>
                     <p className="flex font-barlow font-medium text-gray-700 text-base leading-150 items-center">
-                      {modalData.location}{" "}
+                      {data?.location}{" "}
                     </p>
                   </div>{" "}
                   <div className="flex flex-col gap-2 items-center justify-start">
@@ -105,7 +98,7 @@ const Modal = ({
                       <SalaryIcon /> {t("applyModalSalary")}
                     </p>
                     <p className="flex font-barlow font-medium text-gray-700 text-base leading-150 items-center">
-                      {modalData.salary}$
+                      {data?.salary}$
                     </p>
                   </div>{" "}
                 </div>
@@ -127,14 +120,14 @@ const Modal = ({
               <div className="w-2/3 md:w-full sm:w-full xs:w-full flex flex-col items-start gap-6">
                 <div className="flex flex-col pb-2 items-start gap-2">
                   <p className="text-2xl font-semibold leading-125 text-blue-500">
-                    {modalData.name}
+                    {data?.name}
                   </p>
                   <div className="flex items-center justify-center gap-1">
                     <p className="font-barlow text-base font-medium leading-6 text-gray-300">
                       {t("applyModalBy")}
                     </p>
                     <p className="text-base font-semibold leading-tight text-blue-gray-800">
-                      {modalData.companyName}
+                      {data?.companyName}
                     </p>
                   </div>
                 </div>
@@ -142,14 +135,14 @@ const Modal = ({
                   <p className="text-sm font-semibold leading-tight text-blue-500">
                     {t("applyModalPositionDesc")}
                   </p>
-                  <p>{modalData.description}</p>
+                  <p>{data?.description}</p>
                 </div>
                 <div className="flex flex-col items-start gap-2 self-stretch">
                   <p className="text-sm font-semibold leading-tight text-blue-500">
                     {t("applyModalKeyWords")}
                   </p>
                   <p className="flex gap-2">
-                    {modalData.keywords?.map((keyword) => (
+                    {data?.keywords?.map((keyword) => (
                       <p key={keyword}>{keyword}</p>
                     ))}
                   </p>

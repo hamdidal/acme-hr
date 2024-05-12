@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
   PaginationState,
   getCoreRowModel,
@@ -10,8 +10,17 @@ import {
 import Card from "@/components/Card";
 import Spinner from "@/components/Spinner";
 import { useTranslation } from "react-i18next";
+interface JobTableProps {
+  data?: any[];
+  setPage: (page: number) => void;
+  setPageSize: (pageSize: number) => void;
+  count?: number;
+  page: number;
+  isPending: boolean;
+  pageSize: number;
+}
 
-export const MyTable = ({
+export const JobTable: FC<JobTableProps> = ({
   data,
   setPage,
   setPageSize,
@@ -19,14 +28,6 @@ export const MyTable = ({
   page,
   isPending,
   pageSize,
-}: {
-  data: any[];
-  setPage: (page: number) => void;
-  setPageSize: (pageSize: number) => void;
-  count: number;
-  page: number;
-  isPending: boolean;
-  pageSize: number;
 }) => {
   const { t } = useTranslation();
   const [pagination, setPagination] = useState<PaginationState>({
@@ -35,11 +36,11 @@ export const MyTable = ({
   });
 
   const table = useReactTable({
-    data,
+    data: data ?? [],
     debugTable: true,
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
-    pageCount: count,
+    pageCount: count || 100,
     manualSorting: true,
     onSortingChange: () => {},
     getSortedRowModel: getSortedRowModel(),
@@ -65,19 +66,22 @@ export const MyTable = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageSize]);
 
+  console.log("11",table.getPageCount(), pageSize);
+  
+
   return (
     <div className="p-2 w-full">
       {isPending ? (
         <div className="flex h-[61.5vh] justify-center items-center overflow-auto w-full flex-col gap-4">
           <Spinner />
         </div>
-      ) : data.length > 0 ? (
+      ) : data && data.length > 0 ? (
         <div className="p-2 w-full">
-          <div className="flex h-[60vh] overflow-auto w-full flex-col gap-4">
+          <div className="flex h-[65vh] overflow-auto w-full flex-col gap-4">
             {table.getRowModel().rows.map((row) => {
               return (
                 <div key={row.id}>
-                  <Card row={row.original} />
+                  <Card key={row.id} {...row.original} />
                 </div>
               );
             })}
@@ -90,7 +94,6 @@ export const MyTable = ({
           </p>
         </div>
       )}
-      <div className="h-2" />
       <div className="flex justify-center items-center gap-2 text-gray-500">
         <div> {t("tableShow")}</div>
         <select

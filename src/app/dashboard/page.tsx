@@ -15,11 +15,12 @@ import {
   useState,
 } from "react";
 import _ from "lodash";
-import { MyTable } from "@/core/layouts/Table";
 import Navbar from "@/core/layouts/Navbar";
 import { useGetAllJobs } from "@/hooks/queries/dashboard";
 import debounce from "lodash.debounce";
 import { useTranslation } from "react-i18next";
+import { JobTable } from "@/core/layouts/Table";
+
 
 const Dashboard = () => {
   const { accessToken, clearAccessToken } = useAuthStore();
@@ -66,13 +67,6 @@ const Dashboard = () => {
     }, 300);
     clearAccessToken();
   };
-
-  useEffect(() => {
-    if (jobsData?.data?.data as any) {
-      setAllJobsData(jobsData?.data.data as any);
-      setDataCount(jobsData.data.meta.total as any);
-    }
-  }, [jobsData?.data.data]);
 
   useEffect(() => {
     if (data?.data && profileSuccess) {
@@ -150,12 +144,12 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="flex w-full justify-center items-center">
-          <MyTable
+          <JobTable
             page={page}
-            data={allJobsData}
+            data={jobsData?.data}
             setPage={setPage}
             setPageSize={setPageSize}
-            count={dataCount}
+            count={jobsData?.meta.total}
             isPending={isPending}
             pageSize={pageSize}
           />

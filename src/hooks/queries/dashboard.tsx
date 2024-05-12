@@ -19,14 +19,14 @@ export const useGetAllJobsWithoutFilter  = () => {
   const { isPending, isError, error, data, isFetching, isPlaceholderData, refetch, isSuccess } =
     useQuery({
       queryKey: ["getAllJobsWithoutFilter"],
-      queryFn: () => getAllJobsWithoutFilter(),
+      queryFn: getAllJobsWithoutFilter
 
     });
 
     return { isPending, isError, error, data, isFetching, isPlaceholderData, refetch, isSuccess};
 };
 
-export const useGetJobById  = (id: string | number) => {
+export const useGetJobById  = (id: string) => {
   const { isPending, isError, error, data, isFetching, isPlaceholderData, refetch, isSuccess } =
     useQuery({
       queryKey: ["getJobById", id],

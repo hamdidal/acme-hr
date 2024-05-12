@@ -10,3 +10,23 @@ export interface GetAllJobsDto {
 export interface GetJobByIdDto {
   id: string | number;
 }
+
+export interface Meta {
+  page: number;
+  perPage: number;
+  total: number;
+}
+export interface JobDetail {
+  companyName: string
+  keywords: string[]
+  id: string
+  description: string
+  name: string
+  createdAt: string
+  location: string
+  salary: number
+}
+export interface JobResponse {
+  data: JobDetail[]
+  meta: Meta
+}

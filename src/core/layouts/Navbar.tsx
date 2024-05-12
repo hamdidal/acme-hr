@@ -1,28 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import useUserStore from "@/stores/user-store";
-import Col from "@/components/Col";
-import { useGetAllJobsWithoutFilter } from "@/hooks/queries/dashboard";
-import Spinner from "@/components/Spinner";
+import Col from "@/components/AppliedJobs";
 import { useTranslation } from "react-i18next";
+import Spinner from "@/components/Spinner";
+import {JobDetail} from "@/services/be-api/dashboard/types";
+import { useGetAllJobsWithoutFilter } from "@/hooks/queries/dashboard";
+import AppliedJob from "@/components/AppliedJobs";
 
 const Navbar = () => {
   const {t} = useTranslation()
-  const [allData, setAllData] = useState<any>([]);
-  const { data } = useGetAllJobsWithoutFilter();
+  const { data: allJobs } = useGetAllJobsWithoutFilter();
   const { user } = useUserStore();
 
-  useEffect(() => {
-    if (data?.data.data as any) {
-      setAllData(data?.data.data);
-    }
-  }, [data?.data]);
-
-  const matchedJobs = allData.filter((job: any) =>
+  const matchedJobs = allJobs?.data.filter((job: any) =>
     user.appliedJobs.some((appliedJob) => appliedJob === job.id)
   );
 
-  return allData.length > 0 ? (
+  return allJobs?.data.length ? (
     <div className="flex w-full lg:h-[100vh] md:h-[100vh] sm:h-[85vh] xs:h-[85vh] overflow-auto flex-col items-start gap-6 py-16 px-6 flex-1 self-stretch bg-white shadow-lg">
       <div className="flex flex-col justify-center items-center gap-4 self-stretch">
         <p className="text-blue-600 text-center font-semibold text-lg leading-125">
@@ -40,13 +35,13 @@ const Navbar = () => {
               />
             </div>
             <p className="text-gray-500 text-center font-medium text-base leading-125">
-              {user?.email}{" "}
+              {user?.email}
             </p>
           </div>
         ) : null}
       </div>
-      {matchedJobs.map((row: any, index: any) => (
-        <Col key={index} row={row} />
+      {matchedJobs?.map((job: JobDetail, index: number) => (
+        <AppliedJob key={index} {...job} />
       ))}
     </div>
   ) : (

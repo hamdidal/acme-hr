@@ -7,9 +7,10 @@ import {
   POST_APPLY_JOB,
   POST_WITHDRAW_JOB,
 } from "./constants";
+import { JobDetail, JobResponse } from "@/services/be-api/dashboard/types";
 
-export const getAllJobs = (params: any) => {
-  return Request.get(
+export const getAllJobs = async (params: any) => {
+  const response = await Request.get<any, JobResponse>(
     GET_ALL_JOBS(
       params.page,
       params.perPage,
@@ -18,19 +19,27 @@ export const getAllJobs = (params: any) => {
     ),
     {}
   );
+  return response.data;
 };
-export const getAllJobsWithoutFilter = () => {
-  return Request.get(GET_ALL_JOB_WITHOUT_FILTER, {});
-};
-
-export const getJobById = (id: any) => {
-  return Request.get(GET_JOB_BY_ID(id), {});
-};
-
-export const postApplyJob = (id: any) => {
-  return Request.post(POST_APPLY_JOB(id), {}, {});
+export const getAllJobsWithoutFilter = async () => {
+  const response = await Request.get<any, JobResponse>(
+    GET_ALL_JOB_WITHOUT_FILTER,
+    {}
+  );
+  return response.data;
 };
 
-export const postWithdrawJob = (id: any) => {
-  return Request.post(POST_WITHDRAW_JOB(id), {}, {});
+export const getJobById = async (uuid: string) => {
+  const response = await Request.get<any, JobDetail>(GET_JOB_BY_ID(uuid), {});
+  return response.data;
+};
+
+export const postApplyJob = async (uuid: string) => {
+  const response = await Request.post(POST_APPLY_JOB(uuid), {}, {});
+  return response.data;
+};
+
+export const postWithdrawJob = async (uuid: any) => {
+  const response = await Request.post(POST_WITHDRAW_JOB(uuid), {}, {});
+  return response.data;
 };

@@ -5,9 +5,9 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/layout/Header.tsx",
-    "./src/layout/Navbar.tsx",
-    "./src/layout/Table.tsx",
+    "./src/core/layouts/Header.tsx",
+    "./src/core/layouts/Navbar.tsx",
+    "./src/core/layouts/Table.tsx",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {

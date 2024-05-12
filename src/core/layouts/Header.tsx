@@ -1,14 +1,20 @@
 import AcmeIcon from "@/assets/icons/acmeIcon";
 import ExitIcon from "@/assets/icons/exitIcon";
-import React from "react";
+import React, { FC } from "react";
 import Image from "next/image";
 import HamburgerMenuIcon from "@/assets/icons/hamburgerMenuIcon";
 import { LanguagePickerDropdown } from "./LanguagePickerDropdown";
 import { useTranslation } from "react-i18next";
 import useAuthStore from "@/stores/auth-store";
 import { useRouter } from "next/navigation";
+import { UserModel } from "@/stores/types";
+interface HeaderProps {
+  user: UserModel;
+  isMenuOpen: boolean;
+  setIsMenuOpen: (isOpen: boolean) => void;
+}
 
-const Header = ({ user, isMenuOpen, setIsMenuOpen }: any) => {
+const Header: FC<HeaderProps> = ({ user, isMenuOpen, setIsMenuOpen }) => {
   const { t } = useTranslation();
   const { clearAccessToken } = useAuthStore();
   const router = useRouter();
@@ -28,13 +34,16 @@ const Header = ({ user, isMenuOpen, setIsMenuOpen }: any) => {
         <p className="text-sm p-2 border-b-2 border-black rounded-[0.3125rem]">
           {t("headerJobList")}
         </p>
-        <p onClick={handleLogOut} className="text-sm p-2 hover:cursor-pointer flex gap-1 items-center text-red-500">
+        <p
+          onClick={handleLogOut}
+          className="text-sm p-2 hover:cursor-pointer flex gap-1 items-center text-red-500"
+        >
           {" "}
           <ExitIcon /> {t("headerLogOut")}
         </p>
         {user ? (
           <p className="text-sm p-2 text-gray-900 flex gap-1 items-center">
-            {user?.email}{" "}
+            {user?.email}
             <Image
               className="w-8 h-8 rounded-full"
               src={user?.profileImage}

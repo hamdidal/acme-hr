@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import SalaryIcon from "@/assets/icons/salaryIcon";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import Amazon from "@/assets/images/amazon.png";
 import useUserStore from "@/stores/user-store";
@@ -8,14 +8,17 @@ import Modal from "./Modal";
 import KeywordsIcon from "@/assets/icons/keywordIcon";
 import { useJobApply, useJobWithdraw } from "@/hooks/queries/dashboard";
 import { useTranslation } from "react-i18next";
+import {JobDetail} from "@/services/be-api/dashboard/types";
 
-export const Card = ({ row }: { row: any }) => {
+interface CardProps extends JobDetail {}
+
+export const Card: FC<CardProps> = ({ name, location, companyName, salary,id, keywords }) => {
   const { t } = useTranslation();
   const { user, setIsSuccess } = useUserStore();
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [selectedId, setSelectedId] = useState("");
-  const isJobApplied = user.appliedJobs.some((job: any) => job === row.id);
+  const isJobApplied = user.appliedJobs.some((job: any) => job === id);
   const { mutate: applyMutate, isSuccess: applySuccess, isPending:applyPending } = useJobApply();
   const { mutate: withdrawMutate, isSuccess: withdrawSuccess, isPending:withdrawPending } =
     useJobWithdraw();
@@ -37,8 +40,12 @@ export const Card = ({ row }: { row: any }) => {
     setShowWithdrawModal(true);
   };
 
-  const handleApply = ({ id }: any) => {
-    applyMutate(selectedId);
+  const handleApply = () => {
+    applyMutate(id);
+  };
+
+  const handleWithdraw = () => {
+    withdrawMutate(id);
   };
 
   useEffect(() => {
@@ -53,19 +60,16 @@ export const Card = ({ row }: { row: any }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applySuccess, withdrawSuccess]);
 
-  const handleWithdraw = ({ id }: any) => {
-    withdrawMutate(selectedId);
-  };
 
   return (
     <div className="flex xs:flex-col justify-between w-full border rounded-lg bg-white shadow-md">
       <div className="flex flex-col justify-center gap-4 w-96 p-5">
         <div className="flex items-baseline gap-2">
           <p className="font-semibold text-blue-500 text-2xl leading-125">
-            {row?.name}
+            {name}
           </p>
           <p className="font-barlow font-bold text-blue-500 text-xs leading-150">
-            ({row.location})
+            {location}
           </p>
         </div>
         <div className="flex items-baseline gap-2">
@@ -73,7 +77,7 @@ export const Card = ({ row }: { row: any }) => {
             {t("cardBy")}
           </p>
           <p className="font-semibold text-gray-700 text-lg leading-125">
-            {row.companyName}
+            {companyName}
           </p>
         </div>
         <div className="flex justify-around">
@@ -82,7 +86,7 @@ export const Card = ({ row }: { row: any }) => {
               <SalaryIcon /> {t("cardSalary")}
             </p>
             <p className="flex font-barlow font-medium text-gray-700 text-base leading-150 items-center">
-              {row.salary}$
+              {salary}$
             </p>
           </div>
           <div className="flex flex-col gap-2">
@@ -90,7 +94,7 @@ export const Card = ({ row }: { row: any }) => {
               <KeywordsIcon /> {t("cardKeywords")}
             </p>
             <div className="flex flex-col font-barlow font-medium text-gray-700 text-base leading-150 items-center">
-              {row.keywords.slice(0 - 2).map((keyword: string) => (
+              {keywords.slice(0 - 2).map((keyword: string) => (
                 <p key={keyword}>{keyword}</p>
               ))}
             </div>
@@ -99,7 +103,7 @@ export const Card = ({ row }: { row: any }) => {
         <div className="flex gap-4">
           {isJobApplied ? null : (
             <button
-              onClick={() => handleShowModal(row.id)}
+              onClick={() => handleShowModal(id)}
               className="flex p-2 w-1/2 justify-center items-start rounded-md border border-gray-200 shadow-md text-gray-400 text-center text-base font-medium"
             >
               {t("cardShowDetails")}
@@ -107,7 +111,7 @@ export const Card = ({ row }: { row: any }) => {
           )}
           {isJobApplied ? (
             <button
-              onClick={() => handleWithdrawModal(row.id)}
+              onClick={() => handleWithdrawModal(id)}
               className="rounded-lg border border-gray-300 bg-red-500 shadow-md flex py-2 px-6 justify-center items-start"
             >
               {t("cardWithdraw")}
@@ -125,7 +129,7 @@ export const Card = ({ row }: { row: any }) => {
       {showDetailModal && (
         <Modal
           onClose={handleCloseModal}
-          onConfirm={(id) => handleApply(id)}
+          onConfirm={handleApply}
           isApply={true}
           isPending={applyPending}
           id={selectedId}
@@ -134,7 +138,7 @@ export const Card = ({ row }: { row: any }) => {
       {showWithdrawModal && (
         <Modal
           onClose={handleCloseModal}
-          onConfirm={(id) => handleWithdraw(id)}
+          onConfirm={handleWithdraw}
           isApply={false}
           isPending={withdrawPending}
           id={selectedId}
