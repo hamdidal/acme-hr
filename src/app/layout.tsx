@@ -8,7 +8,7 @@ const rubik = Rubik({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "acme hr",
-  description: "get job with acme hr",
+  description: "job with acme hr",
 };
 
 export default function RootLayout({

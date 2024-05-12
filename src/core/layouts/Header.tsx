@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import AcmeIcon from "@/assets/icons/acmeIcon";
 import ExitIcon from "@/assets/icons/exitIcon";
 import React, { FC } from "react";
@@ -25,16 +26,23 @@ const Header: FC<HeaderProps> = ({ user, isMenuOpen, setIsMenuOpen }) => {
     clearAccessToken();
   };
   return (
-    <div className="flex w-full items-center justify-between">
-      <div className="flex items-center gap-10">
+    <div
+      data-testid="header-container"
+      className="flex w-full items-center justify-between"
+    >
+      <div data-testid="header-icon" className="flex items-center gap-10">
         <AcmeIcon currentColor={"#119DFF"} />
         <LanguagePickerDropdown />
       </div>
-      <div className="flex px-1 py-0 gap-8 justify-between items-center text-gray-900 xs:hidden sm:hidden md:hidden">
+      <div
+        data-testid="header-title"
+        className="flex px-1 py-0 gap-8 justify-between items-center text-gray-900 xs:hidden sm:hidden md:hidden"
+      >
         <p className="text-sm p-2 border-b-2 border-black rounded-[0.3125rem]">
           {t("headerJobList")}
         </p>
         <p
+          data-testid="header-logout"
           onClick={handleLogOut}
           className="text-sm p-2 hover:cursor-pointer flex gap-1 items-center text-red-500"
         >
@@ -42,9 +50,12 @@ const Header: FC<HeaderProps> = ({ user, isMenuOpen, setIsMenuOpen }) => {
           <ExitIcon /> {t("headerLogOut")}
         </p>
         {user ? (
-          <p className="text-sm p-2 text-gray-900 flex gap-1 items-center">
+          <p
+            data-testid="header-user"
+            className="text-sm p-2 text-gray-900 flex gap-1 items-center"
+          >
             {user?.email}
-            <Image
+            <img
               className="w-8 h-8 rounded-full"
               src={user?.profileImage}
               alt="avatar"

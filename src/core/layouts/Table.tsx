@@ -40,7 +40,7 @@ export const JobTable: FC<JobTableProps> = ({
     debugTable: true,
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
-    pageCount: count || 100,
+    pageCount: count || 100,
     manualSorting: true,
     onSortingChange: () => {},
     getSortedRowModel: getSortedRowModel(),
@@ -66,8 +66,7 @@ export const JobTable: FC<JobTableProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageSize]);
 
-  console.log("11",table.getPageCount(), pageSize);
-  
+  console.log("11", table.getPageCount(), pageSize);
 
   return (
     <div className="p-2 w-full">
@@ -76,11 +75,11 @@ export const JobTable: FC<JobTableProps> = ({
           <Spinner />
         </div>
       ) : data && data.length > 0 ? (
-        <div className="p-2 w-full">
+        <div data-testid="table-container" className="p-2 w-full">
           <div className="flex h-[65vh] overflow-auto w-full flex-col gap-4">
             {table.getRowModel().rows.map((row) => {
               return (
-                <div key={row.id}>
+                <div data-testid="table-card" key={row.id}>
                   <Card key={row.id} {...row.original} />
                 </div>
               );
@@ -88,7 +87,10 @@ export const JobTable: FC<JobTableProps> = ({
           </div>
         </div>
       ) : (
-        <div className="flex w-full h-[100vh] justify-center items-center">
+        <div
+          data-testid="no-jobs-message"
+          className="flex w-full h-[100vh] justify-center items-center"
+        >
           <p className="text-4xl font-semibold m-10 text-gray-500">
             {t("tableNoJobsFound")}
           </p>
@@ -97,6 +99,7 @@ export const JobTable: FC<JobTableProps> = ({
       <div className="flex justify-center items-center gap-2 text-gray-500">
         <div> {t("tableShow")}</div>
         <select
+          data-testid="page-size-select"
           className="p-2 border rounded"
           value={pageSize}
           onChange={(e) => {
@@ -110,6 +113,7 @@ export const JobTable: FC<JobTableProps> = ({
           ))}
         </select>
         <button
+          data-testid="previous-page-button"
           onClick={handlePreviousPage}
           disabled={!table.getCanPreviousPage()}
           hidden={page <= 1}
@@ -117,6 +121,7 @@ export const JobTable: FC<JobTableProps> = ({
           {"<"}
         </button>
         <button
+          data-testid="next-page-button"
           className=" hover:cursor-pointer"
           onClick={handleNextPage}
           disabled={!table.getCanNextPage()}
@@ -125,9 +130,9 @@ export const JobTable: FC<JobTableProps> = ({
           {">"}
         </button>
         <span className="flex items-center p-2 gap-1 border rounded">
-          <div> {t("tablePage")}</div>
-          <strong>
-            {page} - {table.getPageCount() / pageSize}
+          <div className="flex"> {t("tablePage")}</div>
+          <strong className="flex">
+            <div data-testid="page-number">{page}</div>- {table.getPageCount() / pageSize}
           </strong>
         </span>
       </div>

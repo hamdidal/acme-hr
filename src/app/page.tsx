@@ -10,10 +10,7 @@ import UserIcon from "@/assets/icons/userIcon";
 import RegisterIcon from "@/assets/icons/userIcon copy";
 import useAuthStore from "@/stores/auth-store";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {
-  useLoginMutation,
-  useRegisterMutation,
-} from "@/hooks/queries/auth";
+import { useLoginMutation, useRegisterMutation } from "@/hooks/queries/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -111,8 +108,8 @@ const Home = () => {
             <AcmeIcon currentColor={"white"} />
           </div>
           <div className="flex px-0.625rem justify-between items-start gap-[1.25rem]">
-            <LanguagePickerDropdown />
             <button
+              data-testid="login-button"
               onClick={() => setOpenLoginModal(!openLoginModal)}
               className="flex px-[1.1875rem] py-[0.6875rem] justify-center items-center gap-[0.375rem] rounded-[0.3125rem] bg-gradient-to-r from-blue-600 to-blue-900 text-white text-center font-medium text-sm leading-[1.09375rem]"
             >
@@ -120,6 +117,7 @@ const Home = () => {
               {t("homePageLogin")}
             </button>
             <button
+              data-testid="signup-button"
               onClick={() => setOpenRegisterModal(!openRegisterModal)}
               className="flex px-[1.1875rem] py-[0.6875rem] justify-center items-center gap-[0.375rem] rounded-[0.3125rem] bg-gradient-to-r from-blue-600 to-blue-900 text-white text-center font-medium text-sm leading-[1.09375rem]"
             >
@@ -140,7 +138,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="flex w-full p-[3.875rem] justify-center items-center gap-[4.63475rem] bg-white flex-shrink-0 xs:flex-col xs:px-8 xs:pt-8 xs:gap-[2rem] xs:pb-8">
+      <div className="h-[24rem] flex w-full p-[3.875rem] justify-center items-center gap-[4.63475rem] bg-white flex-shrink-0 xs:flex-col xs:px-8 xs:pt-8 xs:gap-[2rem] xs:pb-8">
         <div className="flex flex-col items-start gap-[1.625rem] self-stretch xs:items-center">
           <div className="flex items-end gap-6">
             <AcmeIcon currentColor={"#119DFF"} />
@@ -157,6 +155,7 @@ const Home = () => {
             <FbookIcon />
             <TwIcon />
             <IgIcon />
+            <LanguagePickerDropdown />
           </div>
         </div>
         <div className="w-[0.0625rem] h-[9.25rem] bg-gray-400 bg-opacity-20 xs:w-full xs:h-[0.0625rem]"></div>
@@ -169,8 +168,7 @@ const Home = () => {
 
       <div
         style={{ visibility: openLoginModal ? "visible" : "hidden" }}
-        aria-hidden="true"
-        className="p-4 md:p-6 flex-col gap-6overflow-y-auto overflow-x-hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+        className="p-4 md:p-6 flex-col gap-6overflow-y-auto overflow-x-hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 w-full md:inset-0 h-[100%] max-h-full"
       >
         <div className="relative p-4 w-full max-w-md max-h-full">
           <div className="relative flex justify-center h-[30rem] flex-col gap-[1rem] bg-white rounded-lg shadow ">
@@ -210,6 +208,7 @@ const Home = () => {
                   <form
                     className="flex justify-center flex-col gap-[1rem] space-y-4"
                     action="#"
+                    data-testid="login-form"
                     onSubmit={handleSubmit(handleLogin)}
                   >
                     <div>
@@ -229,6 +228,7 @@ const Home = () => {
                         render={({ field }: { field: any }) => (
                           <input
                             type="email"
+                            data-testid="email"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                             placeholder={t("homePageEmailPlaceholder")}
                             {...field}
@@ -255,6 +255,7 @@ const Home = () => {
                           render={({ field }) => (
                             <>
                               <input
+                                data-testid="password"
                                 type={passwordVisible ? "text" : "password"}
                                 placeholder={t("homePagePasswordPlaceholder")}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -321,8 +322,7 @@ const Home = () => {
 
       <div
         style={{ visibility: openRegisterModal ? "visible" : "hidden" }}
-        aria-hidden="true"
-        className="p-4 md:p-6 flex-col gap-6overflow-y-auto overflow-x-hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+        className="p-4 md:p-6 flex-col gap-6overflow-y-auto overflow-x-hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 w-full md:inset-0 h-[100%] max-h-full"
       >
         <div className="relative p-4 w-full max-w-md max-h-full">
           <div className="relative flex justify-center h-[30rem] flex-col gap-[1rem] bg-white rounded-lg shadow ">
@@ -348,6 +348,7 @@ const Home = () => {
                   <form
                     className="flex justify-center flex-col gap-[1rem] space-y-4"
                     action="#"
+                    data-testid="register-form"
                     onSubmit={handleSubmit(handleRegister)}
                   >
                     <div>
@@ -367,6 +368,7 @@ const Home = () => {
                         render={({ field }: { field: any }) => (
                           <input
                             type="email"
+                            data-testid="register-email"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                             placeholder={t("homePageEmailPlaceholder")}
                             {...field}
@@ -393,6 +395,7 @@ const Home = () => {
                           render={({ field }) => (
                             <>
                               <input
+                                data-testid="register-password"
                                 type={passwordVisible ? "text" : "password"}
                                 placeholder={t("homePagePasswordPlaceholder")}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"

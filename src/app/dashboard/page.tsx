@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import CloseIcon from "@/assets/icons/closeIcon";
@@ -9,18 +10,13 @@ import Header from "@/core/layouts/Header";
 import { useProfile } from "@/hooks/queries/auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import {
-  ChangeEventHandler,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
 import _ from "lodash";
 import Navbar from "@/core/layouts/Navbar";
 import { useGetAllJobs } from "@/hooks/queries/dashboard";
 import debounce from "lodash.debounce";
 import { useTranslation } from "react-i18next";
 import { JobTable } from "@/core/layouts/Table";
-
 
 const Dashboard = () => {
   const { accessToken, clearAccessToken } = useAuthStore();
@@ -107,7 +103,10 @@ const Dashboard = () => {
             setIsMenuOpen={setIsMenuOpen}
           />
         </div>
-        <p className="flex w-full h-[5.625rem] justify-center items-center gap-[0.375rem] rounded-[0.3125rem] bg-gradient-to-r from-blue-600 to-blue-900 text-white text-center text-4xl font-semibold leading-9">
+        <p
+          data-testid="dashboard-header"
+          className="flex w-full h-[5.625rem] justify-center items-center gap-[0.375rem] rounded-[0.3125rem] bg-gradient-to-r from-blue-600 to-blue-900 text-white text-center text-4xl font-semibold leading-9"
+        >
           {t("dashboardJobList")}
         </p>
         <div className="flex md:flex-col sm:flex-col xs:flex-col px-16 py-6 justify-around items-center gap-[1.4375rem] bg-[#4D9FDB]">
@@ -116,6 +115,7 @@ const Dashboard = () => {
               {t("dashboardFieldFilter")}
             </p>
             <select
+              data-testid="filter-dropdown"
               value={selectedField}
               onChange={(event) => setSelectedField(event.target.value)}
               className="block appearance-none w-1/2 bg-white border rounded-lg border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 shadow leading-tight focus:outline-none focus:shadow-outline text-opacity-50 text-gray-900"
@@ -135,6 +135,7 @@ const Dashboard = () => {
             </p>
             <input
               type="text"
+              data-testid="search-input"
               disabled={selectedField === ""}
               defaultValue={filterText}
               onChange={debouncedOnChange}
@@ -181,7 +182,11 @@ const Dashboard = () => {
             </li>
             <li>
               <a className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100">
-                <p onClick={handleLogOut} className="text-sm hover:underline w-full justify-start hover:cursor-pointer flex gap-1 items-center text-red-500 pl-4">
+                <p
+                  id="logout-button"
+                  onClick={handleLogOut}
+                  className="text-sm hover:underline w-full justify-start hover:cursor-pointer flex gap-1 items-center text-red-500 pl-4"
+                >
                   <ExitIcon /> {t("hamburgerMenuLogOut")}
                 </p>{" "}
               </a>
@@ -189,7 +194,7 @@ const Dashboard = () => {
             <li>
               <p className="text-sm flex gap-1 items-center w-full justify-start pl-4 text-gray-900">
                 {user?.email}{" "}
-                <Image
+                <img
                   className="w-8 h-8 rounded-full"
                   src={user?.profileImage}
                   alt="avatar"
