@@ -48,8 +48,6 @@ export const Card: FC<CardProps> = ({
   };
 
   const handleWithdrawModal = (id: string) => {
-    console.log(typeof id, id);
-
     setSelectedId(id);
     setShowWithdrawModal(true);
   };
