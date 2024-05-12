@@ -10,7 +10,7 @@ describe("Login and Registration Page", () => {
     it("should allow valid users to login", () => {
       cy.get('[data-testid="login-button"]').click();
 
-      cy.get('[data-testid="email"]').type("testmail5@gmail.com");
+      cy.get('[data-testid="email"]').type("hamdi4test@test.com");
       cy.get('[data-testid="password"]').type("Hamdi123*");
 
       cy.get('[data-testid="login-form"]').submit();

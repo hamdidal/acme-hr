@@ -1,37 +1,56 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ACME HR
 
-## Getting Started
+## Version: 0.1.0
 
-First, run the development server:
+This is a private package.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Scripts
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- `dev`: Runs the application in development mode.
+- `build`: Builds the application for production.
+- `start`: Starts the compiled application.
+- `lint`: Lints your code.
+- `cy:open`: Opens Cypress tests in the interactive GUI.
+- `cy:run`: Runs Cypress tests in the background.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Dependencies
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Production Dependencies
 
-## Learn More
+- @hookform/resolvers: Resolvers for form validation.
+- @tanstack/react-query: React Query for data management.
+- @tanstack/react-query-devtools: Development tools for React Query.
+- @tanstack/react-table: React components for tables.
+- @types/lodash.debounce: TypeScript type definitions for Lodash debounce.
+- @types/react-lottie: TypeScript type definitions for React Lottie.
+- autoprefixer: Tool to add CSS vendor prefixes.
+- axios: Library for making HTTP requests.
+- formik: Library for form management in React.
+- i18next: Library for multi-language support.
+- lodash.debounce: Library for adding delay to consecutive calls.
+- next: Web framework for React applications.
+- react: React library.
+- react-dom: React DOM binding.
+- react-hook-form: Library for managing forms in React.
+- react-i18next: Integration of i18next for React applications.
+- react-lottie: Lottie animation component for React.
+- react-router-dom: Routing library for React.
+- react-toastify: Library for notifications in React.
+- strip-ansi: Library to strip ANSI escape codes.
+- tailwind: Tailwind CSS library.
+- wrap-ansi: Library to wrap ANSI escape codes.
+- yup: Library for schema validation.
+- zustand: Minimalist global state management for React.
 
-To learn more about Next.js, take a look at the following resources:
+### Development Dependencies
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- @types/node: TypeScript type definitions for Node.js.
+- @types/react: TypeScript type definitions for React.
+- @types/react-dom: TypeScript type definitions for React DOM.
+- eslint: Code quality tool for JavaScript and TypeScript.
+- eslint-config-next: ESLint configuration for Next.js.
+- postcss: CSS processing tool.
+- tailwindcss: Tailwind CSS framework.
+- typescript: TypeScript compiler.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# find-a-job
+---

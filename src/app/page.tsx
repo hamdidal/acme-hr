@@ -83,6 +83,9 @@ const Home = () => {
   const {
     handleSubmit,
     control,
+    reset,
+    getValues,
+    resetField,
     formState: { errors, isValid, isSubmitting, isSubmitted },
   } = useForm<LoginFormValues>({
     resolver: yupResolver(schema),
@@ -90,14 +93,21 @@ const Home = () => {
       email: "",
       password: "",
     },
-  });
+  });  
 
   const handleLogin = async (e: LoginFormValues) => {
     mutate({ data: e });
+    reset(),
+    resetField("email"),
+    resetField("password")
   };
 
   const handleRegister = async (e: LoginFormValues) => {
     registerMutate({ data: e });
+    reset()
+    reset(),
+    resetField("email"),
+    resetField("password")
   };
 
   return (
@@ -226,13 +236,14 @@ const Home = () => {
                           maxLength: 256,
                         }}
                         render={({ field }: { field: any }) => (
-                          <input
+                          <><input
                             type="email"
                             data-testid="email"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                             placeholder={t("homePageEmailPlaceholder")}
-                            {...field}
-                          />
+                            {...field} /><p>
+                              {field.value}
+                            </p></>
                         )}
                       />
                       {errors.email?.message && (
