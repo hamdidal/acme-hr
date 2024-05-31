@@ -2,8 +2,8 @@ import LocationIcon from "@/assets/icons/locationIcon";
 import SalaryIcon from "@/assets/icons/salaryIcon";
 import { useGetJobById } from "@/hooks/queries/dashboard";
 import React, { useEffect, useState } from "react";
-import Spinner from "@/components/Spinner";
 import { useTranslation } from "react-i18next";
+import Spinner from "./Spinner";
 
 export interface ModalProps {
   onClose: () => void;

@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import useUserStore from "@/stores/user-store";
 import { useTranslation } from "react-i18next";
-import Spinner from "@/components/Spinner";
 import { JobDetail } from "@/services/be-api/dashboard/types";
 import { useGetAllJobsWithoutFilter } from "@/hooks/queries/dashboard";
 import AppliedJob from "@/components/AppliedJobs";
+import Spinner from "@/components/Spinner";
 
 const Navbar = () => {
   const { t } = useTranslation();
