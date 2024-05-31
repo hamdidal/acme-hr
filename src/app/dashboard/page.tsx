@@ -17,6 +17,7 @@ import { useGetAllJobs } from "@/hooks/queries/dashboard";
 import debounce from "lodash.debounce";
 import { useTranslation } from "react-i18next";
 import { JobTable } from "@/core/layouts/Table";
+import withAuth from "@/core/layouts/WithAuth";
 
 const Dashboard = () => {
   const { accessToken, clearAccessToken } = useAuthStore();
@@ -73,7 +74,9 @@ const Dashboard = () => {
 
   const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setFilterText(e.target.value);
-    setSelectedField("name");
+    if (selectedField === "") {
+      setSelectedField("name");
+    }
   };
 
   useEffect(() => {
@@ -153,6 +156,7 @@ const Dashboard = () => {
             count={jobsData?.meta.total}
             isPending={isPending}
             pageSize={pageSize}
+            filterText={filterText}
           />
         </div>
       </div>
@@ -211,4 +215,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default withAuth(Dashboard);

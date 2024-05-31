@@ -25,7 +25,7 @@ export const Card: FC<CardProps> = ({
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [selectedId, setSelectedId] = useState("");
-  const isJobApplied = user.appliedJobs.some((job: any) => job === id);
+  const isJobApplied = user.appliedJobs.some((job: string) => job === id);
   const {
     mutate: applyMutate,
     isSuccess: applySuccess,

@@ -13,7 +13,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useLoginMutation, useRegisterMutation } from "@/hooks/queries/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import {
+  Controller,
+  ControllerRenderProps,
+  Field,
+  useForm,
+} from "react-hook-form";
 import * as yup from "yup";
 import Spinner from "@/components/Spinner";
 import CloseIcon from "@/assets/icons/closeIcon";
@@ -93,22 +98,33 @@ const Home = () => {
       email: "",
       password: "",
     },
-  });  
+  });
 
   const handleLogin = async (e: LoginFormValues) => {
     mutate({ data: e });
-    reset()
-    resetField("email")
-    resetField("password")
+    reset();
+    resetField("email");
+    resetField("password");
   };
 
   const handleRegister = async (e: LoginFormValues) => {
     registerMutate({ data: e });
-    reset()
-    reset()
-    resetField("email")
-    resetField("password")
+    reset();
+    resetField("email");
+    resetField("password");
   };
+
+  useEffect(() => {
+    if (!openLoginModal) {
+      reset();
+    }
+  }, [openLoginModal, reset]);
+
+  useEffect(() => {
+    if (!openRegisterModal) {
+      reset();
+    }
+  }, [openRegisterModal, reset]);
 
   return (
     <div>
@@ -235,15 +251,24 @@ const Home = () => {
                           required: true,
                           maxLength: 256,
                         }}
-                        render={({ field }: { field: any }) => (
-                          <><input
-                            type="email"
-                            data-testid="email"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder={t("homePageEmailPlaceholder")}
-                            {...field} /><p>
-                              {field.value}
-                            </p></>
+                        render={({
+                          field,
+                        }: {
+                          field: ControllerRenderProps<
+                            LoginFormValues,
+                            "email"
+                          >;
+                        }) => (
+                          <>
+                            <input
+                              type="email"
+                              data-testid="email"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                              placeholder={t("homePageEmailPlaceholder")}
+                              {...field}
+                            />
+                            <p>{field.value}</p>
+                          </>
                         )}
                       />
                       {errors.email?.message && (
@@ -376,7 +401,14 @@ const Home = () => {
                           required: true,
                           maxLength: 256,
                         }}
-                        render={({ field }: { field: any }) => (
+                        render={({
+                          field,
+                        }: {
+                          field: ControllerRenderProps<
+                            LoginFormValues,
+                            "email"
+                          >;
+                        }) => (
                           <input
                             type="email"
                             data-testid="register-email"

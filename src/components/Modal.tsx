@@ -7,10 +7,10 @@ import { useTranslation } from "react-i18next";
 
 export interface ModalProps {
   onClose: () => void;
-  onConfirm: (id: any) => void;
+  onConfirm: (id: string) => void;
   message?: string;
   isApply: boolean;
-  id: any;
+  id: string;
   isPending?: boolean;
   isJobSuccess?: boolean;
 }
@@ -69,7 +69,7 @@ const Modal = ({
                 {t("withdrawModalCancel")}{" "}
               </button>
               <button
-                onClick={onConfirm}
+                onClick={() => onConfirm(id)}
                 className="px-4 py-2 w-full bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
               >
                 {t("withdrawModalWithdraw")}{" "}
@@ -129,7 +129,7 @@ const Modal = ({
                     {t("applyModalCancel")}
                   </button>{" "}
                   <button
-                    onClick={onConfirm}
+                    onClick={() => onConfirm(id)}
                     className="flex w-full px-[1.1875rem] py-[0.6875rem] justify-center items-center gap-[0.375rem] rounded-[0.3125rem] bg-gradient-to-r from-blue-600 to-blue-900 text-white text-center font-medium text-sm leading-[1.09375rem]"
                   >
                     {t("applyModalApply")}

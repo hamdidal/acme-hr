@@ -13,7 +13,7 @@ const Navbar = () => {
   const { data: allJobs } = useGetAllJobsWithoutFilter();
   const { user } = useUserStore();
 
-  const matchedJobs = allJobs?.data.filter((job: any) =>
+  const matchedJobs = allJobs?.data.filter((job: JobDetail) =>
     user.appliedJobs.some((appliedJob) => appliedJob === job.id)
   );
 

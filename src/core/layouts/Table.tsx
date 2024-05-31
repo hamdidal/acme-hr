@@ -10,14 +10,16 @@ import {
 import Card from "@/components/Card";
 import Spinner from "@/components/Spinner";
 import { useTranslation } from "react-i18next";
+import { JobDetail } from "@/services/be-api/dashboard/types";
 interface JobTableProps {
-  data?: any[];
+  data?: JobDetail[];
   setPage: (page: number) => void;
   setPageSize: (pageSize: number) => void;
   count?: number;
   page: number;
   isPending: boolean;
   pageSize: number;
+  filterText: string;
 }
 
 export const JobTable: FC<JobTableProps> = ({
@@ -28,6 +30,7 @@ export const JobTable: FC<JobTableProps> = ({
   page,
   isPending,
   pageSize,
+  filterText
 }) => {
   const { t } = useTranslation();
   const [pagination, setPagination] = useState<PaginationState>({
@@ -65,6 +68,17 @@ export const JobTable: FC<JobTableProps> = ({
     setPage(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageSize]);
+
+  useEffect(() => {
+    if (filterText !== "") {
+      setPage(1);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterText]);
+
+  console.log(table.getPageCount(), pageSize);
+  
+  
 
   return (
     <div className="p-2 w-full">
@@ -130,7 +144,7 @@ export const JobTable: FC<JobTableProps> = ({
         <span className="flex items-center p-2 gap-1 border rounded">
           <div className="flex"> {t("tablePage")}</div>
           <strong className="flex">
-            <div data-testid="page-number">{page}</div>- {table.getPageCount() / pageSize}
+            <div data-testid="page-number">{page}</div>- {(table.getPageCount() / pageSize).toFixed(0)}
           </strong>
         </span>
       </div>

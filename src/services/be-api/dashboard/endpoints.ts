@@ -8,8 +8,9 @@ import {
   POST_WITHDRAW_JOB,
 } from "./constants";
 import { JobDetail, JobResponse } from "@/services/be-api/dashboard/types";
+import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 
-export const getAllJobs = async (params: any) => {
+export const getAllJobs = async (params: Params) => {
   const response = await Request.get<any, JobResponse>(
     GET_ALL_JOBS(
       params.page,
@@ -39,7 +40,7 @@ export const postApplyJob = async (uuid: string) => {
   return response.data;
 };
 
-export const postWithdrawJob = async (uuid: any) => {
+export const postWithdrawJob = async (uuid: string) => {
   const response = await Request.post(POST_WITHDRAW_JOB(uuid), {}, {});
   return response.data;
 };
