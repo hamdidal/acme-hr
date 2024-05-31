@@ -20,10 +20,10 @@ import {
   useForm,
 } from "react-hook-form";
 import * as yup from "yup";
-import Spinner from "@/components/Spinner";
 import CloseIcon from "@/assets/icons/closeIcon";
 import { useTranslation } from "react-i18next";
 import { LanguagePickerDropdown } from "@/core/layouts/LanguagePickerDropdown";
+import Spinner from "@/components/Spinner";
 
 export type LoginFormValues = {
   email: string;
