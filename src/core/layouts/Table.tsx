@@ -74,10 +74,7 @@ export const JobTable: FC<JobTableProps> = ({
       setPage(1);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterText]);
-
-  console.log(table.getPageCount(), pageSize);
-  
+  }, [filterText]);  
   
 
   return (
