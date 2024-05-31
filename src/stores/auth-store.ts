@@ -1,3 +1,5 @@
+"use client";
+
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
@@ -22,7 +24,7 @@ const useAuthStore = create<AuthState>()(
       setAccessToken: (token) => set(() => ({ accessToken: token! })),
       clearAccessToken: () => {
         set(() => ({ accessToken: null }));
-        localStorage.removeItem("authStore");
+          localStorage.removeItem("authStore");
       },
       isSuccessAdd: false,
       setIsSuccessAdd: (isSuccess) => set(() => ({ isSuccessAdd: isSuccess })),

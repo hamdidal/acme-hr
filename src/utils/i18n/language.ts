@@ -1,3 +1,5 @@
+"use client"
+
 export default class LanguageUtils {
   static getLanguage() {
     return localStorage.getItem("i18nextLng") ?? "EN";
