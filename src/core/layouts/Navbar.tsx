@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { JobDetail } from "@/services/be-api/dashboard/types";
 import { useGetAllJobsWithoutFilter } from "@/hooks/queries/dashboard";
 import AppliedJob from "@/components/AppliedJobs";
-import Spinner from "@/components/Spinner";
+import Spinner from "../../components/Spinner";
 
 const Navbar = () => {
   const { t } = useTranslation();

@@ -10,7 +10,7 @@ import {
 import Card from "@/components/Card";
 import { useTranslation } from "react-i18next";
 import { JobDetail } from "@/services/be-api/dashboard/types";
-import Spinner from "@/components/Spinner";
+import Spinner from "../../components/Spinner";
 interface JobTableProps {
   data?: JobDetail[];
   setPage: (page: number) => void;

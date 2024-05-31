@@ -23,7 +23,7 @@ import * as yup from "yup";
 import CloseIcon from "@/assets/icons/closeIcon";
 import { useTranslation } from "react-i18next";
 import { LanguagePickerDropdown } from "@/core/layouts/LanguagePickerDropdown";
-import Spinner from "@/components/Spinner";
+import Spinner from "../components/Spinner";
 
 export type LoginFormValues = {
   email: string;
